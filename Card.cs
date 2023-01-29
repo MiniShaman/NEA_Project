@@ -16,7 +16,7 @@ namespace NEA_PROJECT
         }
 
         CardSuit cardsuit;
-
+        
         public CardSuit Suit
         {
             get { return cardsuit; }
@@ -33,8 +33,53 @@ namespace NEA_PROJECT
 
         public string GetDisplayString()
         {
-            //"1 Heart"
-            string cardPrint = Value.ToString() + " of " + Suit.ToString();
+            //"1 of Hearts"
+            //string cardPrint = Value.ToString() + " of " + Suit.ToString();
+            //return cardPrint;
+
+            /*string cardPrint;
+            if (Value == 1)
+                cardPrint = "A";
+            else
+                cardPrint = Value.ToString();
+            cardPrint += Suit.ToString();
+            return cardPrint;*/
+
+            string cardPrint;
+            string SuitSymbol = "\u2665";
+            switch (Suit)
+            {
+                case CardSuit.Hearts:
+                    SuitSymbol = "\u2665";
+                    break;
+                case CardSuit.Diamonds:
+                    SuitSymbol = "\u2666";
+                    break;
+                case CardSuit.Spades:
+                    SuitSymbol = "\u2660";
+                    break;
+                case CardSuit.Clubs:
+                    SuitSymbol = "\u2663";
+                    break;
+            }
+            switch(Value)
+            {
+                case 1:
+                    cardPrint = "A " + SuitSymbol;
+                break;
+                case 11:
+                    cardPrint = "J " + SuitSymbol;
+                break;
+                case 12:
+                    cardPrint = "Q " + SuitSymbol;
+                    break;
+                case 13:
+                    cardPrint = "K " + SuitSymbol;
+                    break;
+                default:
+                    cardPrint = Value.ToString() + " " + SuitSymbol;
+                    break;
+            }
             return cardPrint;
         }
     }

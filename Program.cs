@@ -8,8 +8,7 @@ namespace NEA_PROJECT
         {
             Menu myMenu = new Menu();
             Deck myDeck = new Deck();
-            myMenu.StartMenu();
-            
+            myMenu.StartMenu();  
         }
         /*static void Main(string[] args)
         {

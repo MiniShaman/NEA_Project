@@ -6,9 +6,8 @@ namespace NEA_PROJECT
     {
         static void Main(string[] args)
         {
-            Deck myDeck = new Deck();
-            myDeck.CreateRandom();
-            myDeck.DisplayAll();
+            Menu myMenu = new Menu();
+            myMenu.StartMenu();
         }
         /*static void Main(string[] args)
         {

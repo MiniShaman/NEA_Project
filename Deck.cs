@@ -12,6 +12,8 @@ namespace NEA_PROJECT
 
         Card[] deck = new Card[DeckSize];
 
+        Random RandomGenerator = new Random();
+
         public Deck()
         {
             for (int i = 0; i < DeckSize; ++i)
@@ -19,7 +21,7 @@ namespace NEA_PROJECT
                 deck[i] = new Card();
             }
         }
-        public void ArrayDisplay()
+        public void ArrayDisplay() // Displays all elements in the deck array
         {
             for (int i = 1; i <= DeckSize; ++i)
             {
@@ -27,7 +29,7 @@ namespace NEA_PROJECT
             }
         }
 
-        public void CreateDefault()
+        public void CreateDefault() // Creates a standard, unshuffled deck of cards
         {
             Card.CardSuit suit = Card.CardSuit.Hearts;
             int value = 0;
@@ -44,13 +46,13 @@ namespace NEA_PROJECT
             }
 
         }
-        public void CreateRandom()
+        public void Shuffle() // Creates a Shuffled deck of Cards
         {
             int count = 1;
             foreach (Card card in deck)
             {
-                int suitStore = GetRandomSuit();
-                int valueStore = GetRandomVal();
+                int suitStore = GetRandomSuit(); // random value 0 - 3
+                int valueStore = GetRandomVal(); // random value 1 - 13
                 do
                 {
                     suitStore = GetRandomSuit();
@@ -65,34 +67,36 @@ namespace NEA_PROJECT
             }
 
         }
+        
+        // function which runs through each element in the deck array
+        // and checks to see if it already exists. 
+        // If so (does exist) return true
+        // else false.
         bool CheckCardRep(int sval, int vval, int count)
         {
-            for (int i = 1; i < count; ++i)
+            for (int i = 0; i < DeckSize; ++i)
             {
-                if (deck[i].ToString() == sval.ToString() && deck[i].ToString() == vval.ToString())
-                {
+                Card card = deck[i];
+                 if((int)card.Suit == sval && card.Value == vval)
+                 {
                     return true;
-                }
+                 }               
             }
             return false;
         }
-        int GetRandomVal()
+        int GetRandomVal() // Gets a random value for a Card
         {
-            Random cardval = new Random();
-            int cardValue = cardval.Next(1, SuitSize + 1);
+            int cardValue = RandomGenerator.Next(1, SuitSize + 1);
             return cardValue;
             
         }
-        int GetRandomSuit()
+        int GetRandomSuit() // Gets a random suit for a card
         {
-            Random suitVal = new Random();
-            int suit = suitVal.Next(0, 4);
+            int suit = RandomGenerator.Next(0, 4);
             return suit;
-
-
         }
 
-        public void DisplayAll()
+        public void DisplayAll() // Displays all elements in the array in clear way ('Value' of 'Suit')
         {
             foreach (Card card in deck)
             {

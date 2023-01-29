@@ -20,6 +20,7 @@ namespace NEA_PROJECT
             {
                 deck[i] = new Card();
             }
+            CreateDefault();
         }
         public void ArrayDisplay() // Displays all elements in the deck array
         {
@@ -48,24 +49,15 @@ namespace NEA_PROJECT
         }
         public void Shuffle() // Creates a Shuffled deck of Cards
         {
-            int count = 1;
-            foreach (Card card in deck)
+            CreateDefault();
+            for(int i = 0;i<DeckSize;++i)
             {
-                int suitStore = GetRandomSuit(); // random value 0 - 3
-                int valueStore = GetRandomVal(); // random value 1 - 13
-                do
-                {
-                    suitStore = GetRandomSuit();
-                    valueStore = GetRandomVal();
-                }
-                while(CheckCardRep(suitStore, valueStore, count) == true);             
-                Card.CardSuit suit = new Card.CardSuit();
-                suit = suit + suitStore;
-                card.Value = valueStore;
-                card.Suit = suit;
-                ++count;
+                Random rnd = new Random();
+                int randomCardVal = rnd.Next(0, DeckSize);
+                Card holdCard = deck[i];
+                deck[i] = deck[randomCardVal];
+                deck[randomCardVal] = holdCard;
             }
-
         }
         
         // function which runs through each element in the deck array

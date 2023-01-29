@@ -7,6 +7,7 @@ namespace NEA_PROJECT
 {
     public class Deck
     {
+        int deckPlace = 0;
         public const int DeckSize = 52;
         public const int SuitSize = 13;
 
@@ -45,7 +46,6 @@ namespace NEA_PROJECT
                     suit = suit + 1;
                 }
             }
-
         }
         public void Shuffle() // Creates a Shuffled deck of Cards
         {
@@ -58,6 +58,13 @@ namespace NEA_PROJECT
                 deck[i] = deck[randomCardVal];
                 deck[randomCardVal] = holdCard;
             }
+        }
+        public Card DealCard()
+        {
+            Card CurrentCard = deck[deckPlace];
+            Console.WriteLine(CurrentCard.GetDisplayString());
+            ++deckPlace;
+            return CurrentCard;
         }
         
         // function which runs through each element in the deck array

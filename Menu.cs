@@ -6,11 +6,9 @@ namespace NEA_PROJECT
 {
     class Menu
     {
-        Deck holdDeck = new Deck();
-        char menuReturn;
         public Menu()
         { }
-        public void StartMenu() // Displays a menu of your possible starting options
+        public int StartMenu() // Displays a menu of your possible starting options
         {
             Console.WriteLine("Select one of the Options:" +
                 "\n1.Start" +
@@ -18,7 +16,8 @@ namespace NEA_PROJECT
                 "\n3.Rules" +
                 "\n");
             int optionPick = int.Parse(Console.ReadLine());
-            MenuChoice(optionPick);
+            return optionPick;
+            //MenuChoice(optionPick);
         }
         /* produces the result based on the value of the int optionPick such as starting the game, ...
          Also gives the option to return back to menu whenever */
@@ -28,10 +27,7 @@ namespace NEA_PROJECT
             if (choiceVal == 1)
             {
                 Console.WriteLine("\nThe game has started");
-                Console.WriteLine("");
-                holdDeck.Shuffle();
-                holdDeck.DisplayAll();
-                    
+                Console.WriteLine("");                    
             }
             else if (choiceVal == 2)
             {

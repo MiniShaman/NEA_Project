@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
-    class Card
+     public class Card
     {
         public enum CardSuit
         {

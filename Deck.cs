@@ -52,8 +52,7 @@ namespace NEA_PROJECT
             CreateDefault();
             for(int i = 0;i<DeckSize;++i)
             {
-                Random rnd = new Random();
-                int randomCardVal = rnd.Next(0, DeckSize);
+                int randomCardVal = RandomGenerator.Next(0, DeckSize);
                 Card holdCard = deck[i];
                 deck[i] = deck[randomCardVal];
                 deck[randomCardVal] = holdCard;
@@ -62,7 +61,7 @@ namespace NEA_PROJECT
         public Card DealCard()
         {
             Card CurrentCard = deck[deckPlace];
-            Console.WriteLine(CurrentCard.GetDisplayString());
+            CurrentCard.DisplayCard();
             ++deckPlace;
             return CurrentCard;
         }
@@ -71,12 +70,12 @@ namespace NEA_PROJECT
         // and checks to see if it already exists. 
         // If so (does exist) return true
         // else false.
-        bool CheckCardRep(int sval, int vval, int count)
+        bool CheckCardRep(int sVal, int vVal, int Vount)
         {
             for (int i = 0; i < DeckSize; ++i)
             {
                 Card card = deck[i];
-                 if((int)card.Suit == sval && card.Value == vval)
+                 if((int)card.Suit == sVal && card.Value == vVal)
                  {
                     return true;
                  }               

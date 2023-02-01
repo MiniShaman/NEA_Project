@@ -31,6 +31,20 @@ namespace NEA_PROJECT
             set { cardvalue = value; }
         }
 
+        public void DisplayCard()
+        {
+            string cardString = GetDisplayString();
+            switch (Suit)
+            {
+                case CardSuit.Hearts:
+                case CardSuit.Diamonds:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+            }
+            Console.Write(cardString);
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+
         public string GetDisplayString()
         {
             //"1 of Hearts"
@@ -65,19 +79,19 @@ namespace NEA_PROJECT
             switch(Value)
             {
                 case 1:
-                    cardPrint = "A " + SuitSymbol;
+                    cardPrint = "A" + SuitSymbol;
                 break;
                 case 11:
-                    cardPrint = "J " + SuitSymbol;
+                    cardPrint = "J" + SuitSymbol;
                 break;
                 case 12:
-                    cardPrint = "Q " + SuitSymbol;
+                    cardPrint = "Q" + SuitSymbol;
                     break;
                 case 13:
-                    cardPrint = "K " + SuitSymbol;
+                    cardPrint = "K" + SuitSymbol;
                     break;
                 default:
-                    cardPrint = Value.ToString() + " " + SuitSymbol;
+                    cardPrint = Value.ToString() + SuitSymbol;
                     break;
             }
             return cardPrint;

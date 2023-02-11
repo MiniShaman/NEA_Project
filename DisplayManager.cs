@@ -9,7 +9,6 @@ namespace NEA_PROJECT
 
         public DisplayManager()
         {
-
         }
         public enum DisplayPosition
         {
@@ -23,9 +22,16 @@ namespace NEA_PROJECT
             Chips_Player,
             Chips_Table_Total,
             Chips_Table_Player,
-            TextDisplay
+            BetTextDisplay
         }
-        public void SetCursorPosition(DisplayPosition Position)
+
+        public void SetupDisplay()
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Clear();
+        }
+        public void SetCursorPosition(DisplayPosition Position) // Holds all cursor positions for each item/text being displayed
         {
             switch(Position)
             {
@@ -59,13 +65,28 @@ namespace NEA_PROJECT
                 case DisplayPosition.Chips_Table_Player: 
 
                     break;
-                case DisplayPosition.TextDisplay:
+                case DisplayPosition.BetTextDisplay:
                     Console.SetCursorPosition(0, 20);
                     break;
                 default: 
 
                     break;
             }
+        }
+        public void ClearLine(int xCursorPos, int yCursorPos, int lineClearLength) // Clear any Text in a specific position
+        {
+            Console.SetCursorPosition(xCursorPos, yCursorPos);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            string[] clearText = new string[lineClearLength];
+            foreach(string arraySlot in clearText)
+            {
+                Console.Write("i");
+            }
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+        public void GetStringLength()
+        {
+            Console.Read();
         }
     }
 }

@@ -6,6 +6,7 @@ namespace NEA_PROJECT
 {
     class Chips
     {
+        DisplayManager chipsDisplay = new DisplayManager();
         public int PlayerChipCount = 100;
         public int TableTotal = 0;
         public Chips()
@@ -14,23 +15,29 @@ namespace NEA_PROJECT
         }    
         public void BetAmount()
         {
-            Console.SetCursorPosition(0, 20);
+            chipsDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
             Console.WriteLine("How much would you like to bet?");
             int betPlaced = int.Parse(Console.ReadLine());
-            
-            Console.SetCursorPosition(10, 15);
+            int chipBet = BetValueCheck(betPlaced, PlayerChipCount);
+            chipsDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("Chips: " + PlayerChipCount);
-
-            PlayerChipCount -= betPlaced;
-            TableTotal += betPlaced;
-
-            Console.SetCursorPosition(10, 15);
+            PlayerChipCount -= chipBet;
+            TableTotal += chipBet;
+            chipsDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
             Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("Chips: " + PlayerChipCount);
-            Console.SetCursorPosition(15,7);
+            chipsDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
             Console.WriteLine("Table Total: " + TableTotal);
 
+        }
+        public int BetValueCheck(int betAmount, int PlayerChips)
+        {
+            while(PlayerChips < betAmount)
+            {
+                BetAmount();
+            }
+            return betAmount;
         }
     }
 }

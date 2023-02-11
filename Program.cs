@@ -4,31 +4,38 @@ namespace NEA_PROJECT
 {
     class Program
     {
-        static Deck myDeck = new Deck();
-        static Chips myChips = new Chips();
-        static DisplayManager myDisplay = new DisplayManager();
-        static int TableCount = 1;
+        public static int bestHandCombo = 7;
+        public static Card [] handStatus = new Card[bestHandCombo];
+        public static Deck myDeck = new Deck();
+        public static Chips myChips = new Chips();
+        public static DisplayManager myDisplay = new DisplayManager();
+        public static Table communityTable = new Table();
+        public static int TableCount = 1;
+
         static void Main(string[] args)
         {
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Clear();
+
+            myDisplay.SetupDisplay();
+
             Menu myMenu = new Menu();
             int choice = myMenu.StartMenu();
+
             myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
             Console.WriteLine("Chips: " + myChips.PlayerChipCount);
+
             myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
             Console.WriteLine("Table Total: " + myChips.TableTotal);
+
             myDeck.Shuffle();
             if(choice == 1)
             {
                 DisplayHand();
                 myChips.BetAmount();
-                DisplayTableCards();
+                communityTable.DisplayTableCards(Table.TableCards.Flop);
                 myChips.BetAmount();
-                DisplayTableCards();
+                communityTable.DisplayTableCards(Table.TableCards.Turn);
                 myChips.BetAmount();
-                DisplayTableCards();
+                communityTable.DisplayTableCards(Table.TableCards.River);
                 myChips.BetAmount();
                 Console.SetCursorPosition(30, 30);
 
@@ -43,29 +50,7 @@ namespace NEA_PROJECT
             myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Card2);
             myDeck.DealCard();
         }
-        static void DisplayTableCards()
-        {
-            switch(TableCount)
-            {
-                case 1:
-                    myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop1);
-                    myDeck.DealCard();
-                    myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop2);
-                    myDeck.DealCard();
-                    myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop3);
-                    myDeck.DealCard();
-                    break;
-                case 2:
-                    myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Turn);
-                    myDeck.DealCard();
-                    break;
-                case 3:
-                    myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.River);
-                    myDeck.DealCard();
-                    break;
-            }
-            ++TableCount;
-        }
+        
     }
 }
 

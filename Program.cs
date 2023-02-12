@@ -6,10 +6,12 @@ namespace NEA_PROJECT
     {
         public static int bestHandCombo = 7;
         public static Card [] handStatus = new Card[bestHandCombo];
+        public static Card myCard = new Card();
         public static Deck myDeck = new Deck();
         public static Chips myChips = new Chips();
         public static DisplayManager myDisplay = new DisplayManager();
         public static Table communityTable = new Table();
+        public static HandEvalution playerHand = new HandEvalution();
         public static int TableCount = 1;
 
         static void Main(string[] args)
@@ -29,7 +31,7 @@ namespace NEA_PROJECT
             myDeck.Shuffle();
             if(choice == 1)
             {
-                DisplayHand();
+                communityTable.DisplayHand();
                 myChips.BetAmount();
                 communityTable.DisplayTableCards(Table.TableCards.Flop);
                 myChips.BetAmount();
@@ -40,17 +42,7 @@ namespace NEA_PROJECT
                 Console.SetCursorPosition(30, 30);
 
             }
-        }
-
-        static void DisplayHand()
-        {
-            //my cards
-            myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Card1);
-            myDeck.DealCard();
-            myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Card2);
-            myDeck.DealCard();
-        }
-        
+        }              
     }
 }
 

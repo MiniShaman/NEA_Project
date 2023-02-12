@@ -11,7 +11,7 @@ namespace NEA_PROJECT
         public const int DeckSize = 52;
         public const int SuitSize = 13;
 
-        Card[] deck = new Card[DeckSize];
+        public static Card[] deck = new Card[DeckSize];
 
         Random RandomGenerator = new Random();
 
@@ -58,7 +58,7 @@ namespace NEA_PROJECT
                 deck[randomCardVal] = holdCard;
             }
         }
-        public Card DealCard()
+        public Card DealAndDisplayCard()
         {
             Card CurrentCard = deck[deckPlace];
             CurrentCard.DisplayCard();

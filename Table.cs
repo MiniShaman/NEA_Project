@@ -6,8 +6,9 @@ namespace NEA_PROJECT
 {
     class Table
     {
-        Chips TableChips = new Chips();
-        
+        public static int bestHandChoiceLimit = 7;
+        public static int bestHandCounter = 0;
+        public static Card[] BestHand = new Card[bestHandChoiceLimit];
         public Table()
         {
 
@@ -35,21 +36,46 @@ namespace NEA_PROJECT
             {
                 case TableCards.Flop:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop1);
-                    Program.myDeck.DealCard();
+                    BestHandChoice (Program.myDeck.DealAndDisplayCard());
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop2);
-                    Program.myDeck.DealCard();
+                    BestHandChoice(Program.myDeck.DealAndDisplayCard());
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop3);
-                    Program.myDeck.DealCard();
+                    BestHandChoice(Program.myDeck.DealAndDisplayCard());
+                    Program.playerHand.SortCardValues(BestHand, HandEvalution.flopCardCheckpoint);
+                    Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
+                    Program.myDisplay.DisplayAllCards(BestHand, HandEvalution.flopCardCheckpoint);
                     break;
                 case TableCards.Turn:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Turn);
-                    Program.myDeck.DealCard();
+                    BestHandChoice(Program.myDeck.DealAndDisplayCard());
+                    Program.playerHand.SortCardValues(BestHand, HandEvalution.turnCardCheckpoint);
+                    Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
+                    Program.myDisplay.DisplayAllCards(BestHand, HandEvalution.turnCardCheckpoint);
                     break;
                 case TableCards.River:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.River);
-                    Program.myDeck.DealCard();
+                    BestHandChoice(Program.myDeck.DealAndDisplayCard());
+                    Program.playerHand.SortCardValues(BestHand, HandEvalution.riverCardCheckpoint);
+                    Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
+                    Program.myDisplay.DisplayAllCards(BestHand, HandEvalution.turnCardCheckpoint);
                     break;
             }
+        }
+        public void DisplayHand()
+        {
+            //my cards
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Card1);
+            BestHandChoice(Program.myDeck.DealAndDisplayCard());
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Card2);
+            BestHandChoice(Program.myDeck.DealAndDisplayCard());
+            Program.playerHand.SortCardValues(BestHand,HandEvalution.handCardCheckpoint);
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
+            Program.myDisplay.DisplayAllCards(BestHand, HandEvalution.handCardCheckpoint);
+        }
+        public void BestHandChoice(Card CurrentCard)
+        {
+            BestHand[bestHandCounter] = CurrentCard;
+            ++bestHandCounter;
         }
     }
 }

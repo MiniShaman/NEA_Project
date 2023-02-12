@@ -22,7 +22,8 @@ namespace NEA_PROJECT
             Chips_Player,
             Chips_Table_Total,
             Chips_Table_Player,
-            BetTextDisplay
+            BetTextDisplay,
+            BestHandCombo
         }
 
         public void SetupDisplay()
@@ -68,6 +69,9 @@ namespace NEA_PROJECT
                 case DisplayPosition.BetTextDisplay:
                     Console.SetCursorPosition(0, 20);
                     break;
+                case DisplayPosition.BestHandCombo:
+                    Console.SetCursorPosition(0, 25);
+                    break;
                 default: 
 
                     break;
@@ -87,6 +91,14 @@ namespace NEA_PROJECT
         public void GetStringLength()
         {
             Console.Read();
+        }
+        public void DisplayAllCards( Card [] cardList, int roundPosCounter)
+        {
+            for(int i =0;i< roundPosCounter;++i )
+            {
+                Card topCard = cardList[i];
+                topCard.DisplayCard();
+            }
         }
     }
 }

@@ -69,7 +69,6 @@ namespace NEA_PROJECT
                {
                     return false;
                }
-
             }
             return true;
         }

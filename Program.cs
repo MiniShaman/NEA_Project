@@ -12,6 +12,7 @@ namespace NEA_PROJECT
         public static DisplayManager myDisplay = new DisplayManager();
         public static Table communityTable = new Table();
         public static HandEvalution playerHand = new HandEvalution();
+        public static InputHandling gameInputs = new InputHandling();
         public static int TableCount = 1;
 
         static void Main(string[] args)

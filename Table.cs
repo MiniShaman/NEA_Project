@@ -57,7 +57,7 @@ namespace NEA_PROJECT
                     BestHandChoice(Program.myDeck.DealAndDisplayCard());
                     Program.playerHand.SortCardValues(BestHand, HandEvalution.riverCardCheckpoint);
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
-                    Program.myDisplay.DisplayAllCards(BestHand, HandEvalution.turnCardCheckpoint);
+                    Program.myDisplay.DisplayAllCards(BestHand, HandEvalution.riverCardCheckpoint);
                     break;
             }
         }

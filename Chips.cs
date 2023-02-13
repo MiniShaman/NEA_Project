@@ -6,38 +6,67 @@ namespace NEA_PROJECT
 {
     class Chips
     {
-        DisplayManager chipsDisplay = new DisplayManager();
         public int PlayerChipCount = 100;
         public int TableTotal = 0;
+        public static int MinBetAmount = 1;
         public Chips()
         {
 
         }    
         public void BetAmount()
         {
-            chipsDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
+
             Console.WriteLine("How much would you like to bet?");
-            int betPlaced = int.Parse(Console.ReadLine());
-            int chipBet = BetValueCheck(betPlaced, PlayerChipCount);
-            chipsDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write("Chips: " + PlayerChipCount);
+            int betPlaced = Program.gameInputs.IntInput();
+
+            int chipBet = Program.gameInputs.BetValueCheck(betPlaced, PlayerChipCount);
+
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
+            Program.myDisplay.ClearText("Chips: " + PlayerChipCount);
+            
             PlayerChipCount -= chipBet;
             TableTotal += chipBet;
-            chipsDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-            Console.ForegroundColor = ConsoleColor.Black;
+
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
             Console.WriteLine("Chips: " + PlayerChipCount);
-            chipsDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
             Console.WriteLine("Table Total: " + TableTotal);
 
         }
-        public int BetValueCheck(int betAmount, int PlayerChips)
+        /*
+         * public void BetAmount()
         {
-            while(PlayerChips < betAmount)
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
+
+            Console.WriteLine("How much would you like to bet?");
+            int betPlaced = Program.gameInputs.IntInput();
+
+            int chipBet = Program.gameInputs.BetValueCheck(betPlaced, PlayerChipCount);
+
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Chips: " + PlayerChipCount);
+
+            PlayerChipCount -= chipBet;
+            TableTotal += chipBet;
+
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Chips: " + PlayerChipCount);
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
+            Console.WriteLine("Table Total: " + TableTotal);
+
+        }
+         */
+
+        /*public int BetValueCheck(int betAmount, int PlayerChips)
+        {
+            while (PlayerChips < betAmount || betAmount < Chips.MinBetAmount)
             {
-                BetAmount();
+                Program.myChips.BetAmount();
             }
             return betAmount;
-        }
+        }*/
     }
 }

@@ -77,7 +77,7 @@ namespace NEA_PROJECT
                     break;
             }
         }
-        public void ClearLine(int xCursorPos, int yCursorPos, int lineClearLength) // Clear any Text in a specific position
+        /*public void ClearLine(int xCursorPos, int yCursorPos, int lineClearLength) // Clear any Text in a specific position
         {
             Console.SetCursorPosition(xCursorPos, yCursorPos);
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -87,7 +87,38 @@ namespace NEA_PROJECT
                 Console.Write("i");
             }
             Console.ForegroundColor = ConsoleColor.Black;
+        }*/
+
+        public void ClearText(int cursorLeft, int cursorTop, int clearLength)
+        {
+            Console.SetCursorPosition(cursorLeft, cursorTop);
+            ClearText(clearLength);
+            Console.SetCursorPosition(cursorLeft, cursorTop);
         }
+
+        public void ClearText(int cursorLeft, int cursorTop, string clearText)
+        {
+            Console.SetCursorPosition(cursorLeft, cursorTop);
+            ClearText(clearText);
+            Console.SetCursorPosition(cursorLeft, cursorTop);
+        }
+
+        public void ClearText(int clearLength) // Clear any Text need to have set cursor pos before
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            for(int i=0; i<clearLength; ++i)
+            {
+                Console.Write("X");
+            }
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+        public void ClearText(string clearText) // Clear any Text need to have set cursor pos before
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write(clearText);
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+
         public void GetStringLength()
         {
             Console.Read();

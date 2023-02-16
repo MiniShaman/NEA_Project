@@ -82,13 +82,13 @@ namespace NEA_PROJECT
             }
             return false;
         }
-        int GetRandomVal() // Gets a random value for a Card
+       public int GetRandomVal() // Gets a random value for a Card
         {
             int cardValue = RandomGenerator.Next(1, SuitSize + 1);
             return cardValue;
             
         }
-        int GetRandomSuit() // Gets a random suit for a card
+        public int GetRandomSuit() // Gets a random suit for a card
         {
             int suit = RandomGenerator.Next(0, 4);
             return suit;

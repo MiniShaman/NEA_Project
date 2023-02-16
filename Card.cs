@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
-     public class Card
+    public class Card
     {
         public enum CardSuit
         {
@@ -16,6 +16,12 @@ namespace NEA_PROJECT
         }
 
         CardSuit cardsuit;
+
+        public void SetCard(CardSuit cardsuit, int cardvalue)
+        {
+            Suit = cardsuit;
+            Value = cardvalue;
+        }
         
         public CardSuit Suit
         {

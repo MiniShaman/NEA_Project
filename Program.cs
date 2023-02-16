@@ -15,23 +15,29 @@ namespace NEA_PROJECT
         public static InputHandling gameInputs = new InputHandling();
         public static int TableCount = 1;
 
+        public static HandTest handTest = new HandTest();
+
         static void Main(string[] args)
         {
 
+
             myDisplay.SetupDisplay();
+
+            handTest.DoStraightTests();
+            handTest.DoFlushTests();
 
             Menu myMenu = new Menu();
             int choice = myMenu.StartMenu();
 
-            myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-            Console.WriteLine("Chips: " + myChips.PlayerChipCount);
-
-            myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
-            Console.WriteLine("Table Total: " + myChips.TableTotal);
-
             myDeck.Shuffle();
             if(choice == 1)
             {
+                myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
+                Console.WriteLine("Chips: " + myChips.PlayerChipCount);
+
+                myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
+                Console.WriteLine("Table Total: " + myChips.TableTotal);
+
                 communityTable.DisplayHand();
                 myChips.BetAmount();
                 communityTable.DisplayTableCards(Table.TableCards.Flop);

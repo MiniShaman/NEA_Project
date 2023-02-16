@@ -58,6 +58,9 @@ namespace NEA_PROJECT
                     Program.playerHand.SortCardValues(BestHand, HandEvalution.riverCardCheckpoint);
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
                     Program.myDisplay.DisplayAllCards(BestHand, HandEvalution.riverCardCheckpoint);
+                   HandEvalution.PokerHand displayBestHand = Program.playerHand.GetBestHand(BestHand, HandEvalution.riverCardCheckpoint);
+                    Console.WriteLine(displayBestHand.ToString());
+
                     break;
             }
         }

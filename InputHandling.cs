@@ -31,7 +31,6 @@ namespace NEA_PROJECT
             {
                 readlineString = Console.ReadLine();
                 foundInt = int.TryParse(readlineString, out intFound);
-
                 Program.myDisplay.ClearText(cursorLeft, cursorTop, readlineString);
             }
 

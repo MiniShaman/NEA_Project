@@ -23,9 +23,8 @@ namespace NEA_PROJECT
 
             myDisplay.SetupDisplay();
 
-            handTest.DoStraightTests();
-            handTest.DoFlushTests();
-
+            handTest.DoTests();    
+            
             Menu myMenu = new Menu();
             int choice = myMenu.StartMenu();
 

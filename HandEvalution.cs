@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NEA_PROJECT
 {
@@ -10,7 +8,12 @@ namespace NEA_PROJECT
         public static int flopCardCheckpoint = 5;
         public static int turnCardCheckpoint = 6;
         public static int riverCardCheckpoint = 7;
+
         public static int minHandSize = 5;
+
+        public static int duplicateCardValue = 0; // To store a card value when checking for card value matches
+        public static int firstValueCheck = 0;
+
         public enum PokerHand
         {
             HighCard,
@@ -29,25 +32,34 @@ namespace NEA_PROJECT
             SameVal,
             NonAdjacentVal
         }
-        
+
         // rearrange cards to make best hand at start of array
         // return the best enum PokerHand
         //
-        public PokerHand GetBestHand(Card [] cards, int NumOfCards)
+        public PokerHand GetBestHand(Card[] cards, int NumOfCards)
         {
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandName);
+            firstValueCheck = 0;
             if (NumOfCards >= minHandSize)
             {
                 //if (IsHandAStraightFlush()) return PokerHand.StraightFlush;
-                //if (IsHandAPoker()) return PokerHand.Poker;
-                if (IsHandAFlush(cards, NumOfCards))
-                {
+                if (IsHandAPoker(cards, NumOfCards))
+                    return PokerHand.Poker;
+                else if (IsHandAFullHouse(cards, NumOfCards))
+                    return PokerHand.FullHouse;
+                else if (IsHandAFlush(cards, NumOfCards))
                     return PokerHand.Flush;
-                }
                 else if (IsHandAStraight(cards, NumOfCards))
-                {
                     return PokerHand.Straight;
-                }
-            } 
+                else if (IsHandAThreeOfAKind(cards, NumOfCards))
+                    return PokerHand.ThreeOfAKind;
+                else if (IsHandATwoPair(cards, NumOfCards))
+                    return PokerHand.TwoPair;         
+            }
+            if(IsHandAPair(cards,NumOfCards))
+            {
+                return PokerHand.Pair;
+            }
             return PokerHand.HighCard;
         }
 
@@ -58,24 +70,41 @@ namespace NEA_PROJECT
                 return false;
             }
             else if (!IsHandAFlush(cards, NumOfCards) && !IsHandAStraight(cards,NumOfCards))
-            {
+            { 
                 return false;
             }
         }*/
 
-        /*public bool IsHandAPoker(Card[] cards, int NumOfCards)
+        public bool IsHandAPoker(Card[] cards, int NumOfCards)
         {
-        }*/
+            duplicateCardValue = 0;
+            int pokerPoint = 4;
+            if (DuplicateValueCheck(cards, NumOfCards, pokerPoint))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool IsHandAFullHouse(Card[] cards, int NumOfCards)
+        {
+            duplicateCardValue = 0;
+            int valueTriple = 3;
+            int valuePair = 2;
+            if(DuplicateValueCheck(cards,NumOfCards,valueTriple))
+            {
+                if(DuplicateValueCheck(cards, NumOfCards, valuePair))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public bool IsHandAFlush(Card[] cards, int NumOfCards)
         {
             int heartSuitCounter = 0;
             int clubSuitCounter = 0;
             int diamondSuitCounter = 0;
             int spadeSuitCounter = 0;
-            if (NumOfCards < minHandSize)
-            {
-                return false;
-            }
             for (int i = 0; i < NumOfCards; ++i)
             {
                 Card.CardSuit suitCheck = cards[i].Suit;
@@ -125,7 +154,7 @@ namespace NEA_PROJECT
                 else
                 {
                    
-                    switch (CheckAdjValues(inputVal, compareVal))
+                    switch (CompareCardValues(inputVal, compareVal))
                     {
                         case CardComparison.AdjacentVal:
                             if (firstEntry)
@@ -160,6 +189,39 @@ namespace NEA_PROJECT
             }
                 return false;
         }
+        public bool IsHandAThreeOfAKind(Card []cards, int NumOfCards)
+        {
+            duplicateCardValue = 0;
+            int ThreeOfAKindPoint = 3;
+            if(DuplicateValueCheck(cards,NumOfCards,ThreeOfAKindPoint))
+            {
+                return true;
+            }
+            return false; 
+        }
+        public bool IsHandATwoPair(Card[]cards,int NumOfCards)
+        {
+            duplicateCardValue = 0;
+            int twoPairPoint = 2;
+            if(DuplicateValueCheck(cards,NumOfCards,twoPairPoint))
+            {
+                if(DuplicateValueCheck(cards,NumOfCards,twoPairPoint))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool IsHandAPair(Card[]cards,int NumOfCards)
+        {
+            duplicateCardValue = 0;
+            int pairPoint = 2;
+            if(DuplicateValueCheck(cards,NumOfCards,pairPoint))
+            {
+                return true;
+            }
+            return false;
+        }
         public Card[] SortCardValues(Card[] cards, int NumOfCards)
         {
             do
@@ -189,7 +251,7 @@ namespace NEA_PROJECT
             }
             return true;
         }
-        public CardComparison CheckAdjValues(int cardVal1, int cardVal2)
+        public CardComparison CompareCardValues(int cardVal1, int cardVal2)
         {
             if(cardVal1 == cardVal2+1)
             {
@@ -224,6 +286,47 @@ namespace NEA_PROJECT
                 return true;
             }
             else return false;
+        }
+        // Checks through all cards in your hand to see if there are duplicate values
+        //Returns true if it matches the limit entered else it returns false
+        public bool DuplicateValueCheck(Card[] cards, int NumOfCards, int ValueMatchLimit) 
+        {
+            bool firstMatch = true;
+            int duplicateValueCounter = 0;
+            for (int i = 0; i < NumOfCards - 1; ++i)
+            {
+                if (cards[i].Value != duplicateCardValue)
+                {
+                    int initialVal = cards[i].Value;
+                    int compareVal = cards[i + 1].Value;
+                    switch (CompareCardValues(initialVal, compareVal))
+                    {
+                        //case CardComparison.AdjacentVal:
+                        //    break;
+                        case CardComparison.SameVal:
+                            ++duplicateValueCounter;
+                            if (firstMatch)
+                            {
+                                ++duplicateValueCounter;
+                                firstMatch = false;
+                            }
+                            break;
+                        //case CardComparison.NonAdjacentVal:
+                        //    break;
+                        default: // because cards are sorted when we don't find a match - reset.
+                            firstMatch = true;
+                            duplicateValueCounter = 0;
+                            break;
+                    }
+                    if (duplicateValueCounter == ValueMatchLimit)
+                    {
+                        duplicateCardValue = cards[i].Value;
+                        ++firstValueCheck;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

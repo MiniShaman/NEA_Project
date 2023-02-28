@@ -13,6 +13,13 @@ namespace NEA_PROJECT
         Card[] flush_test_0 = new Card[fullHandSize];
         Card[] flush_test_1 = new Card[fullHandSize];
 
+        Card[] poker_test_0 = new Card[fullHandSize];
+
+        Card[] full_house_test_0 = new Card[fullHandSize];
+        Card[] full_house_test_1 = new Card[fullHandSize];
+
+
+        Card[] pair_test_0 = new Card[fullHandSize];
         public static int fullHandSize = 7;
         public HandTest()
         {
@@ -22,6 +29,13 @@ namespace NEA_PROJECT
 
             InitialiseHand(flush_test_0);
             InitialiseHand(flush_test_1);
+
+            InitialiseHand(poker_test_0);
+
+            InitialiseHand(full_house_test_0);
+            InitialiseHand(full_house_test_1);
+
+            InitialiseHand(pair_test_0);
 
             straight_test_0[0].SetCard(Card.CardSuit.Hearts, 7);
             straight_test_0[1].SetCard(Card.CardSuit.Hearts, 6);
@@ -62,6 +76,38 @@ namespace NEA_PROJECT
             flush_test_1[4].SetCard(Card.CardSuit.Clubs, 4);
             flush_test_1[5].SetCard(Card.CardSuit.Hearts, 3);
             flush_test_1[6].SetCard(Card.CardSuit.Diamonds, 1);
+
+            poker_test_0[0].SetCard(Card.CardSuit.Clubs, 11);
+            poker_test_0[1].SetCard(Card.CardSuit.Clubs, 12);
+            poker_test_0[2].SetCard(Card.CardSuit.Hearts, 11);
+            poker_test_0[3].SetCard(Card.CardSuit.Clubs, 10);
+            poker_test_0[4].SetCard(Card.CardSuit.Diamonds, 11);
+            poker_test_0[5].SetCard(Card.CardSuit.Spades, 11);
+            poker_test_0[6].SetCard(Card.CardSuit.Hearts, 1);
+
+            full_house_test_0[0].SetCard(Card.CardSuit.Clubs, 13);
+            full_house_test_0[1].SetCard(Card.CardSuit.Clubs, 12);
+            full_house_test_0[2].SetCard(Card.CardSuit.Hearts, 13);
+            full_house_test_0[3].SetCard(Card.CardSuit.Clubs, 10);
+            full_house_test_0[4].SetCard(Card.CardSuit.Diamonds, 12);
+            full_house_test_0[5].SetCard(Card.CardSuit.Spades, 13);
+            full_house_test_0[6].SetCard(Card.CardSuit.Hearts, 12);
+
+            full_house_test_1[0].SetCard(Card.CardSuit.Clubs, 13);
+            full_house_test_1[1].SetCard(Card.CardSuit.Clubs, 12);
+            full_house_test_1[2].SetCard(Card.CardSuit.Hearts, 13);
+            full_house_test_1[3].SetCard(Card.CardSuit.Clubs, 10);
+            full_house_test_1[4].SetCard(Card.CardSuit.Diamonds, 1);
+            full_house_test_1[5].SetCard(Card.CardSuit.Spades, 10);
+            full_house_test_1[6].SetCard(Card.CardSuit.Hearts, 12);
+
+            pair_test_0[0].SetCard(Card.CardSuit.Clubs, 11);
+            pair_test_0[1].SetCard(Card.CardSuit.Clubs, 9);
+            pair_test_0[2].SetCard(Card.CardSuit.Hearts, 11);
+            pair_test_0[3].SetCard(Card.CardSuit.Clubs, 2);
+            pair_test_0[4].SetCard(Card.CardSuit.Diamonds, 4);
+            pair_test_0[5].SetCard(Card.CardSuit.Spades, 7);
+            pair_test_0[6].SetCard(Card.CardSuit.Hearts, 1);
         }
 
         void InitialiseHand(Card[] hand)
@@ -135,6 +181,42 @@ namespace NEA_PROJECT
             {
                 Console.WriteLine("ERROR: Flush - false positive.");
             }
+        }
+        public void DoPokerTests()
+        { 
+            Program.playerHand.SortCardValues(poker_test_0, fullHandSize);
+            if (Program.playerHand.IsHandAPoker(poker_test_0,fullHandSize) == false)
+            {
+                Console.WriteLine("ERROR: Poker - basic detection failed");
+            }
+        }
+        public void DoFullHouseTests()
+        {
+            Program.playerHand.SortCardValues(full_house_test_0, fullHandSize);
+            Program.playerHand.SortCardValues(full_house_test_1, fullHandSize);
+            if (Program.playerHand.IsHandAFullHouse(full_house_test_0, fullHandSize) == false)
+            {
+                Console.WriteLine("ERROR: Full House - basic detection failed");
+            }
+            if (Program.playerHand.IsHandAFullHouse(full_house_test_1, fullHandSize))
+            {
+                Console.WriteLine("ERROR: Full House - false positive");
+            }
+        }
+        public void DoPairTest()
+        {
+            Program.playerHand.IsHandAPair(pair_test_0, fullHandSize);
+            if (Program.playerHand.IsHandAPair(pair_test_0, fullHandSize) == false)
+            {
+                Console.WriteLine("ERROR: Pair - basic detection failed");
+            }
+        }
+        public void DoTests()
+        {
+            DoStraightTests();
+            DoFlushTests();
+            DoPokerTests();
+            DoFullHouseTests();
         }
     }
 }

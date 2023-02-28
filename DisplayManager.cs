@@ -23,7 +23,8 @@ namespace NEA_PROJECT
             Chips_Table_Total,
             Chips_Table_Player,
             BetTextDisplay,
-            BestHandCombo
+            BestHandCombo,
+            BestHandName
         }
 
         public void SetupDisplay()
@@ -71,6 +72,9 @@ namespace NEA_PROJECT
                     break;
                 case DisplayPosition.BestHandCombo:
                     Console.SetCursorPosition(0, 25);
+                    break;
+                case DisplayPosition.BestHandName:
+                    Console.SetCursorPosition(3, 27);
                     break;
                 default: 
 

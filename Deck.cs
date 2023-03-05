@@ -9,7 +9,7 @@ namespace NEA_PROJECT
     {
         int deckPlace = 0;
         public const int DeckSize = 52;
-        public const int SuitSize = 13;
+        public const int SuitSize = 14; // our card values go from 2 - 14
 
         public static Card[] deck = new Card[DeckSize];
 
@@ -34,7 +34,7 @@ namespace NEA_PROJECT
         public void CreateDefault() // Creates a standard, unshuffled deck of cards
         {
             Card.CardSuit suit = Card.CardSuit.Hearts;
-            int value = 0;
+            int value = 1; // remember an Ace is 14, so we start at 2
             foreach (Card card in deck)
             {
                 value++;
@@ -42,7 +42,7 @@ namespace NEA_PROJECT
                 card.Suit = suit;
                 if (value == SuitSize)
                 {
-                    value = 0;
+                    value = 1;
                     suit = suit + 1;
                 }
             }
@@ -52,10 +52,10 @@ namespace NEA_PROJECT
             CreateDefault();
             for(int i = 0;i<DeckSize;++i)
             {
-                int randomCardVal = RandomGenerator.Next(0, DeckSize);
+                int randomCardPosition = RandomGenerator.Next(0, DeckSize);
                 Card holdCard = deck[i];
-                deck[i] = deck[randomCardVal];
-                deck[randomCardVal] = holdCard;
+                deck[i] = deck[randomCardPosition];
+                deck[randomCardPosition] = holdCard;
             }
         }
         public Card DealAndDisplayCard()
@@ -84,7 +84,7 @@ namespace NEA_PROJECT
         }
        public int GetRandomVal() // Gets a random value for a Card
         {
-            int cardValue = RandomGenerator.Next(1, SuitSize + 1);
+            int cardValue = RandomGenerator.Next(2, SuitSize + 1);
             return cardValue;
             
         }

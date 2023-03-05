@@ -131,8 +131,10 @@ namespace NEA_PROJECT
         {
             for(int i =0;i< roundPosCounter;++i )
             {
-                Card topCard = cardList[i];
-                topCard.DisplayCard();
+                if(cardList[i] != null)
+                {
+                    cardList[i].DisplayCard();
+                }
             }
         }
     }

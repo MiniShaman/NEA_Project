@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,10 +16,16 @@ namespace NEA_PROJECT
             Clubs
         }
 
+        public static int Ace = 14;
+        public static int King = 13;
+        public static int Queen = 12;
+        public static int Jack = 11;
+
         CardSuit cardsuit;
 
         public void SetCard(CardSuit cardsuit, int cardvalue)
         {
+            Debug.Assert(cardvalue >= 2 && cardvalue <= Ace);
             Suit = cardsuit;
             Value = cardvalue;
         }
@@ -29,7 +36,7 @@ namespace NEA_PROJECT
             set { cardsuit = value; }
         }
 
-        int cardvalue;// 1 = Ace, 2 = Two ... 13 = King
+        int cardvalue;// 2 = Two, 3 = Three ... 13 = King Ace = 14 (makes sorting higher to lower easier)
 
         public int Value
         {
@@ -84,7 +91,7 @@ namespace NEA_PROJECT
             }
             switch(Value)
             {
-                case 1:
+                case 14:
                     cardPrint = "A" + SuitSymbol;
                 break;
                 case 11:

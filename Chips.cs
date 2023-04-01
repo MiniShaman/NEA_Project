@@ -18,15 +18,15 @@ namespace NEA_PROJECT
             Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
 
             Console.WriteLine("How much would you like to bet?");
-            int betPlaced = Program.gameInputs.IntInput();
 
-            int chipBet = Program.gameInputs.BetValueCheck(betPlaced, PlayerChipCount);
+
+            int betPlaced = Program.gameInputs.BetValueCheck(PlayerChipCount);
 
             Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
             Program.myDisplay.ClearText("Chips: " + PlayerChipCount);
             
-            PlayerChipCount -= chipBet;
-            TableTotal += chipBet;
+            PlayerChipCount -= betPlaced;
+            TableTotal += betPlaced;
 
             Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
             Console.WriteLine("Chips: " + PlayerChipCount);

@@ -10,12 +10,15 @@ namespace NEA_PROJECT
         {
 
         }
-        public int BetValueCheck(int betAmount, int PlayerChips)
+        public int BetValueCheck(int PlayerChips)
         {
-            while (PlayerChips < betAmount || betAmount < Chips.MinBetAmount)
+            int betAmount;
+            do
             {
-                Program.myChips.BetAmount();
+                betAmount = Program.gameInputs.IntInput();
             }
+            while (PlayerChips <= betAmount || betAmount < Chips.MinBetAmount);
+
             return betAmount;
         }
         public int IntInput()

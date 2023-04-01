@@ -23,6 +23,7 @@ namespace NEA_PROJECT
 
         CardSuit cardsuit;
 
+
         public void SetCard(CardSuit cardsuit, int cardvalue)
         {
             Debug.Assert(cardvalue >= 2 && cardvalue <= Ace);

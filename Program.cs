@@ -23,14 +23,19 @@ namespace NEA_PROJECT
 
             myDisplay.SetupDisplay();
 
-            handTest.DoTests();    
-            
-            Menu myMenu = new Menu();
-            int choice = myMenu.StartMenu();
+            handTest.DoTests();
+
+            //Menu myMenu = new Menu();
+            //int choice = myMenu.StartMenu();
+            Console.WriteLine("*****************************************************************");
+            Console.WriteLine("**                                                             **");
+            Console.WriteLine("**                      JOSH'S POKER!                          **");
+            Console.WriteLine("**                                                             **");
+            Console.WriteLine("*****************************************************************");
 
             myDeck.Shuffle();
-            if(choice == 1)
-            {
+            //if(choice == 1)
+           //{
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
                 Console.WriteLine("Chips: " + myChips.PlayerChipCount);
 
@@ -47,7 +52,7 @@ namespace NEA_PROJECT
                 myChips.BetAmount();
                 Console.SetCursorPosition(30, 30);
 
-            }
+            //}
         }              
     }
 }

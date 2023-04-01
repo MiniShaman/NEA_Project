@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
-    class Chips
+    public class Chips
     {
         public int PlayerChipCount = 100;
         public int TableTotal = 0;

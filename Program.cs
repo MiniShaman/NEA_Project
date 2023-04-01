@@ -4,18 +4,20 @@ namespace NEA_PROJECT
 {
     class Program
     {
-        public static int bestHandCombo = 7;
-        public static Card [] handStatus = new Card[bestHandCombo];
-        public static Card myCard = new Card();
+        //public static int bestHandCombo = 7;
+        //public static Card [] handStatus = new Card[bestHandCombo];
+        //public static Card myCard = new Card();
+        //public static int TableCount = 1;
+
         public static Deck myDeck = new Deck();
-        public static Chips myChips = new Chips();
+        //public static Chips myChips = new Chips(); //Chips need to go to each player
         public static DisplayManager myDisplay = new DisplayManager();
         public static Table communityTable = new Table();
         public static HandEvalution playerHand = new HandEvalution();
         public static InputHandling gameInputs = new InputHandling();
-        public static int TableCount = 1;
-
         public static HandTest handTest = new HandTest();
+
+        public static Player player = new Player();
 
         static void Main(string[] args)
         {
@@ -37,19 +39,19 @@ namespace NEA_PROJECT
             //if(choice == 1)
            //{
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-                Console.WriteLine("Chips: " + myChips.PlayerChipCount);
+                Console.WriteLine("Chips: " + player.myChips.PlayerChipCount);
 
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
-                Console.WriteLine("Table Total: " + myChips.TableTotal);
+                Console.WriteLine("Table Total: " + player.myChips.TableTotal);
 
                 communityTable.DisplayHand();
-                myChips.BetAmount();
+                player.myChips.BetAmount();
                 communityTable.DisplayTableCards(Table.TableCards.Flop);
-                myChips.BetAmount();
+                player.myChips.BetAmount();
                 communityTable.DisplayTableCards(Table.TableCards.Turn);
-                myChips.BetAmount();
+                player.myChips.BetAmount();
                 communityTable.DisplayTableCards(Table.TableCards.River);
-                myChips.BetAmount();
+                player.myChips.BetAmount();
                 Console.SetCursorPosition(30, 30);
 
             //}

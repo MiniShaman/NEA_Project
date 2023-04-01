@@ -4,8 +4,9 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
-    class Player
+    public class Player
     {
-
+        public Chips myChips = new Chips();
+       
     }
 }

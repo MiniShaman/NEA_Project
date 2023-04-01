@@ -13,7 +13,7 @@ namespace NEA_PROJECT
         //public static Chips myChips = new Chips(); //Chips need to go to each player
         public static DisplayManager myDisplay = new DisplayManager();
         public static Table communityTable = new Table();
-        public static HandEvalution playerHand = new HandEvalution();
+        //public static HandEvaluation playerHand = new HandEvaluation();
         public static InputHandling gameInputs = new InputHandling();
         public static HandTest handTest = new HandTest();
 
@@ -25,7 +25,7 @@ namespace NEA_PROJECT
 
             myDisplay.SetupDisplay();
 
-            handTest.DoTests();
+            handTest.DoTests(player);
 
             //Menu myMenu = new Menu();
             //int choice = myMenu.StartMenu();
@@ -44,13 +44,13 @@ namespace NEA_PROJECT
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
                 Console.WriteLine("Table Total: " + player.myChips.TableTotal);
 
-                communityTable.DisplayHand();
+                communityTable.DisplayHand(player);
                 player.myChips.BetAmount();
-                communityTable.DisplayTableCards(Table.TableCards.Flop);
+                communityTable.DisplayTableCards(Table.TableCards.Flop, player);
                 player.myChips.BetAmount();
-                communityTable.DisplayTableCards(Table.TableCards.Turn);
+                communityTable.DisplayTableCards(Table.TableCards.Turn, player);
                 player.myChips.BetAmount();
-                communityTable.DisplayTableCards(Table.TableCards.River);
+                communityTable.DisplayTableCards(Table.TableCards.River, player);
                 player.myChips.BetAmount();
                 Console.SetCursorPosition(30, 30);
 

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace NEA_PROJECT
 {
-    class HandEvalution
+    public class HandEvaluation
     {
         public static int handCardCheckpoint = 2;
         public static int flopCardCheckpoint = 5;

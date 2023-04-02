@@ -7,31 +7,36 @@ namespace NEA_PROJECT
     public class Chips
     {
         public int PlayerChipCount = 100;
-        public int TableTotal = 0;
+        public int roundBetTotal = 0;
         public static int MinBetAmount = 1;
         public Chips()
         {
 
         }    
-        public void BetAmount()
+        public void BetAmount(DisplayManager.DisplayPosition playerChips, DisplayManager.DisplayPosition playerTotalBet, bool AI, int betPlaced = 0 )
         {
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
+            if (!AI)
+            {
+                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
 
-            Console.WriteLine("How much would you like to bet?");
+                Console.WriteLine("How much would you like to bet?");
 
+                betPlaced = Program.gameInputs.BetValueCheck(PlayerChipCount);
+            }
 
-            int betPlaced = Program.gameInputs.BetValueCheck(PlayerChipCount);
+            //Program.myDisplay.SetCursorPosition(playerChips);
+            //Program.myDisplay.ClearText("Chips: " + PlayerChipCount);
 
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-            Program.myDisplay.ClearText("Chips: " + PlayerChipCount);
-            
+            roundBetTotal += betPlaced;
             PlayerChipCount -= betPlaced;
-            TableTotal += betPlaced;
+            Program.TableTotal += betPlaced;
 
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
+            /*Program.myDisplay.SetCursorPosition(playerChips);
             Console.WriteLine("Chips: " + PlayerChipCount);
+            Program.myDisplay.SetCursorPosition(playerTotalBet);
+            Console.WriteLine("Total Bet in Round: " + roundBetTotal);
             Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
-            Console.WriteLine("Table Total: " + TableTotal);
+            Console.WriteLine("Table Total: " + Program.TableTotal);*/
 
         }
         /*

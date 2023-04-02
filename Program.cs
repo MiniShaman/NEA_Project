@@ -8,54 +8,61 @@ namespace NEA_PROJECT
         //public static Card [] handStatus = new Card[bestHandCombo];
         //public static Card myCard = new Card();
         //public static int TableCount = 1;
-
-        public static Deck myDeck = new Deck();
-        //public static Chips myChips = new Chips(); //Chips need to go to each player
-        public static DisplayManager myDisplay = new DisplayManager();
-        public static Table communityTable = new Table();
         //public static HandEvaluation playerHand = new HandEvaluation();
+        //public static Chips myChips = new Chips(); //Chips need to go to each player
+
+        public static Deck myDeck = new Deck();       
+        public static DisplayManager myDisplay = new DisplayManager();
+        public static Table communityTable = new Table();      
         public static InputHandling gameInputs = new InputHandling();
         public static HandTest handTest = new HandTest();
-
         public static Player player = new Player();
-
+        public static Player aiPlayer = new Player();
+        public static int TableTotal = 0;
         static void Main(string[] args)
         {
-
-
-            myDisplay.SetupDisplay();
-
             handTest.DoTests(player);
 
-            //Menu myMenu = new Menu();
-            //int choice = myMenu.StartMenu();
-            Console.WriteLine("*****************************************************************");
-            Console.WriteLine("**                                                             **");
-            Console.WriteLine("**                      JOSH'S POKER!                          **");
-            Console.WriteLine("**                                                             **");
-            Console.WriteLine("*****************************************************************");
-
             myDeck.Shuffle();
-            //if(choice == 1)
-           //{
-                myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-                Console.WriteLine("Chips: " + player.myChips.PlayerChipCount);
 
-                myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
-                Console.WriteLine("Table Total: " + player.myChips.TableTotal);
+            myDisplay.InitialiseDisplay();
+            myDisplay.SetupDisplay(100);                
 
-                communityTable.DisplayHand(player);
-                player.myChips.BetAmount();
-                communityTable.DisplayTableCards(Table.TableCards.Flop, player);
-                player.myChips.BetAmount();
-                communityTable.DisplayTableCards(Table.TableCards.Turn, player);
-                player.myChips.BetAmount();
-                communityTable.DisplayTableCards(Table.TableCards.River, player);
-                player.myChips.BetAmount();
-                Console.SetCursorPosition(30, 30);
+            communityTable.DealPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);
+            communityTable.DealPlayerCards(aiPlayer, DisplayManager.DisplayPosition.AI_Card1, DisplayManager.DisplayPosition.AI_Card2);
 
-            //}
-        }              
+            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
+            myDisplay.UpdateDisplay(player, aiPlayer);
+
+            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
+            myDisplay.UpdateDisplay(player, aiPlayer);
+
+            communityTable.DisplayTableCards(Table.TableCards.Flop, player);
+            
+            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
+            myDisplay.UpdateDisplay(player, aiPlayer);
+
+            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
+            myDisplay.UpdateDisplay(player, aiPlayer);
+
+            communityTable.DisplayTableCards(Table.TableCards.Turn, player);
+
+            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
+            myDisplay.UpdateDisplay(player, aiPlayer);
+
+            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
+            myDisplay.UpdateDisplay(player, aiPlayer);
+
+            communityTable.DisplayTableCards(Table.TableCards.River, player);
+
+            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
+            myDisplay.UpdateDisplay(player, aiPlayer);
+
+            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
+            myDisplay.UpdateDisplay(player, aiPlayer);
+        }  
+        
+
     }
 }
 

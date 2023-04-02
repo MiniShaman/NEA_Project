@@ -32,27 +32,27 @@ namespace NEA_PROJECT
         public static int fullHandSize = 7;
         public HandTest()
         {
-            InitialiseHand(straight_test_0);
-            InitialiseHand(straight_test_1);
-            InitialiseHand(straight_test_2);
+            Hand.InitialiseHand(straight_test_0);
+            Hand.InitialiseHand(straight_test_1);
+            Hand.InitialiseHand(straight_test_2);
 
-            InitialiseHand(flush_test_0);
-            InitialiseHand(flush_test_1);
+            Hand.InitialiseHand(flush_test_0);
+            Hand.InitialiseHand(flush_test_1);
 
-            InitialiseHand(poker_test_0);
+            Hand.InitialiseHand(poker_test_0);
 
-            InitialiseHand(full_house_test_0);
-            InitialiseHand(full_house_test_1);
-            InitialiseHand(full_house_test_2);
+            Hand.InitialiseHand(full_house_test_0);
+            Hand.InitialiseHand(full_house_test_1);
+            Hand.InitialiseHand(full_house_test_2);
 
-            InitialiseHand(pair_test_0);
-            InitialiseHand(pair_test_1);
+            Hand.InitialiseHand(pair_test_0);
+            Hand.InitialiseHand(pair_test_1);
 
-            InitialiseHand(two_pair_test_0);
-            InitialiseHand(two_pair_test_1);
+            Hand.InitialiseHand(two_pair_test_0);
+            Hand.InitialiseHand(two_pair_test_1);
 
-            InitialiseHand(straight_flush_test_0);
-            InitialiseHand(straight_flush_test_1);
+            Hand.InitialiseHand(straight_flush_test_0);
+            Hand.InitialiseHand(straight_flush_test_1);
 
             straight_test_0[0].SetCard(Card.CardSuit.Hearts, 7);
             straight_test_0[1].SetCard(Card.CardSuit.Hearts, 6);
@@ -175,13 +175,13 @@ namespace NEA_PROJECT
             straight_flush_test_1[6].SetCard(Card.CardSuit.Clubs, 7);
         }
 
-        void InitialiseHand(Card[] hand)
+        /*void InitialiseHand(Card[] hand)
         {
-            for (int i = 0; i < fullHandSize; ++i)
+            for (int i = 0; i < hand.Length; ++i)
             {
                 hand[i] = new Card();
             }
-        }
+        }*/
         /*public Card[] PrintStraightHand()
         {
             bool repeatCase;
@@ -219,20 +219,20 @@ namespace NEA_PROJECT
 
         public void DoStraightTests(Player player)
         {
-            player.myHand.SortCardValues(straight_test_0, fullHandSize);
-            player.myHand.SortCardValues(straight_test_1, fullHandSize);
-            player.myHand.SortCardValues(straight_test_2, fullHandSize);
-            if (player.myHand.IsHandAStraight(straight_test_0, fullHandSize) == false)
+            player.myBestHand.SortCardValues(straight_test_0, fullHandSize);
+            player.myBestHand.SortCardValues(straight_test_1, fullHandSize);
+            player.myBestHand.SortCardValues(straight_test_2, fullHandSize);
+            if (player.myBestHand.IsHandAStraight(straight_test_0, fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Straight - basic detection failed.");
             }
 
-            if (player.myHand.IsHandAStraight(straight_test_1, fullHandSize))
+            if (player.myBestHand.IsHandAStraight(straight_test_1, fullHandSize))
             {
                 Console.WriteLine("ERROR: Straight - false positive (duplication).");
             }
 
-            if(player.myHand.IsHandAStraight(straight_test_2, fullHandSize) == false)
+            if(player.myBestHand.IsHandAStraight(straight_test_2, fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Straight - Low Ace not found.");
             }
@@ -240,78 +240,78 @@ namespace NEA_PROJECT
 
         public void DoFlushTests(Player player)
         {
-            player.myHand.SortCardValues(flush_test_0, fullHandSize);
-            player.myHand.SortCardValues(flush_test_1, fullHandSize);
+            player.myBestHand.SortCardValues(flush_test_0, fullHandSize);
+            player.myBestHand.SortCardValues(flush_test_1, fullHandSize);
 
-            if (player.myHand.IsHandAFlush(flush_test_0, fullHandSize) == false)
+            if (player.myBestHand.IsHandAFlush(flush_test_0, fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Flush - basic detection failed.");
             }
 
-            if (player.myHand.IsHandAFlush(flush_test_1, fullHandSize))
+            if (player.myBestHand.IsHandAFlush(flush_test_1, fullHandSize))
             {
                 Console.WriteLine("ERROR: Flush - false positive.");
             }
         }
         public void DoPokerTests(Player player)
         { 
-            player.myHand.SortCardValues(poker_test_0, fullHandSize);
-            if (player.myHand.IsHandAPoker(poker_test_0,fullHandSize) == false)
+            player.myBestHand.SortCardValues(poker_test_0, fullHandSize);
+            if (player.myBestHand.IsHandAPoker(poker_test_0,fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Poker - basic detection failed");
             }
         }
         public void DoFullHouseTests(Player player)
         {
-            player.myHand.SortCardValues(full_house_test_0, fullHandSize);
-            player.myHand.SortCardValues(full_house_test_1, fullHandSize);
-            if (player.myHand.IsHandAFullHouse(full_house_test_0, fullHandSize) == false)
+            player.myBestHand.SortCardValues(full_house_test_0, fullHandSize);
+            player.myBestHand.SortCardValues(full_house_test_1, fullHandSize);
+            if (player.myBestHand.IsHandAFullHouse(full_house_test_0, fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Full House - basic detection failed");
             }
 
-            if (player.myHand.IsHandAFullHouse(full_house_test_1, fullHandSize))
+            if (player.myBestHand.IsHandAFullHouse(full_house_test_1, fullHandSize))
             {
                 Console.WriteLine("ERROR: Full House - false positive");
             }
         }
         public void DoPairTests(Player player)
         {
-            player.myHand.SortCardValues(pair_test_0, fullHandSize);
-            player.myHand.SortCardValues(pair_test_1, fullHandSize);
-            if (player.myHand.IsHandAPair(pair_test_0, fullHandSize) == false)
+            player.myBestHand.SortCardValues(pair_test_0, fullHandSize);
+            player.myBestHand.SortCardValues(pair_test_1, fullHandSize);
+            if (player.myBestHand.IsHandAPair(pair_test_0, fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Pair - basic detection failed");
             }
-            if (player.myHand.IsHandAPair(pair_test_1, fullHandSize))
+            if (player.myBestHand.IsHandAPair(pair_test_1, fullHandSize))
             {
                 Console.WriteLine("ERROR: Pair - false positive");
             }
         }
         public void DoTwoPairTests(Player player)
         {
-            player.myHand.SortCardValues(two_pair_test_0, fullHandSize);
-            player.myHand.SortCardValues(two_pair_test_1, fullHandSize);
-            if (player.myHand.IsHandATwoPair(two_pair_test_0, fullHandSize) == false)
+            player.myBestHand.SortCardValues(two_pair_test_0, fullHandSize);
+            player.myBestHand.SortCardValues(two_pair_test_1, fullHandSize);
+            if (player.myBestHand.IsHandATwoPair(two_pair_test_0, fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Two Pair - basic detection failed");
             }
-            if (player.myHand.IsHandATwoPair(two_pair_test_1, fullHandSize))
+            if (player.myBestHand.IsHandATwoPair(two_pair_test_1, fullHandSize))
             {
                 Console.WriteLine("ERROR: Two Pair - false positive");
             }
         }
         public void DoStraightFlushTests(Player player)
         {
-            player.myHand.SortCardValues(straight_flush_test_0,fullHandSize);
-            player.myHand.SortCardValues(straight_flush_test_1, fullHandSize);
+            player.myBestHand.SortCardValues(straight_flush_test_0,fullHandSize);
+            player.myBestHand.SortCardValues(straight_flush_test_1, fullHandSize);
 
-            if (player.myHand.IsHandAStraightFlush(straight_flush_test_0, fullHandSize) == false)
+            if (player.myBestHand.IsHandAStraightFlush(straight_flush_test_0, fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Straight Flush - basic detection failed");
             }
 
-            if (player.myHand.IsHandAStraightFlush(straight_flush_test_1, fullHandSize))
+            if (player.myBestHand.IsHandAStraightFlush(straight_flush_test_1, fullHandSize))
             {
                 Console.WriteLine("ERROR: Straight Flush - false positive");
             }

@@ -17,7 +17,7 @@ namespace NEA_PROJECT
             {
                 betAmount = Program.gameInputs.IntInput();
             }
-            while (PlayerChips <= betAmount || betAmount < Chips.MinBetAmount);
+            while (PlayerChips < betAmount || betAmount < Chips.MinBetAmount);
 
             return betAmount;
         }

@@ -5,10 +5,10 @@ namespace NEA_PROJECT
 {
     public class HandEvaluation
     {
-        public static int handCardCheckpoint = 2;
-        public static int flopCardCheckpoint = 5;
-        public static int turnCardCheckpoint = 6;
-        public static int riverCardCheckpoint = 7;
+        //public static int handCardCheckpoint = 2;
+        //public static int flopCardCheckpoint = 5;
+        //public static int turnCardCheckpoint = 6;
+        //public static int riverCardCheckpoint = 7;
 
         public static int minHandSize = 5;
 

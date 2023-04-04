@@ -27,11 +27,9 @@ namespace NEA_PROJECT
             myDisplay.InitialiseDisplay();
 
             myDeck.Shuffle();
+            myDisplay.SetupDisplay(player.myChips.PlayerChipCount, aiPlayer.myChips.PlayerChipCount);                
 
-            
-            //myDisplay.SetupDisplay(player.myChips.PlayerChipCount, aiPlayer.myChips.PlayerChipCount);                
-
-            communityTable.DealPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);
+            /*communityTable.DealPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);
             communityTable.DealPlayerCards(aiPlayer, DisplayManager.DisplayPosition.AI_Card1, DisplayManager.DisplayPosition.AI_Card2);
 
             player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
@@ -62,24 +60,25 @@ namespace NEA_PROJECT
             myDisplay.UpdateDisplay(player, aiPlayer);
 
             aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
-            myDisplay.UpdateDisplay(player, aiPlayer);
-
-            /*one off initialisation*/
-
+            myDisplay.UpdateDisplay(player, aiPlayer);*/
+            //game loop added in
             while (playGame)
             {
-                myDisplay.SetupDisplay(player.myChips.PlayerChipCount, aiPlayer.myChips.PlayerChipCount);
-
+                player.myChips.roundBetTotal = 0;
+                aiPlayer.myChips.roundBetTotal = 0;
                 communityTable.DealPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);
                 communityTable.DealPlayerCards(aiPlayer, DisplayManager.DisplayPosition.AI_Card1, DisplayManager.DisplayPosition.AI_Card2);
 
                 bool playersTurn = true;
                 roundPosition = Table.RoundPhases.Pre_Flop;
 
-                while (roundPosition != Table.RoundPhases.FinishRound)
-                {                    
-                    while (!communityTable.EqualBetCheck(player.myChips.roundBetTotal,aiPlayer.myChips.roundBetTotal))
+                while (roundPosition != Table.RoundPhases.Finish_Round)
+                {
+                    myDisplay.UpdateDisplay(player, aiPlayer);
+                    bool firstBet = true;
+                    while (!communityTable.EqualBetCheck(player.myChips.roundBetTotal,aiPlayer.myChips.roundBetTotal) || firstBet)
                     {
+                        firstBet = false; 
                         if (playersTurn)
                         {
                             player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);                            
@@ -92,13 +91,15 @@ namespace NEA_PROJECT
                         playersTurn = !playersTurn;
                         myDisplay.UpdateDisplay(player, aiPlayer);
                     }
+                    ++roundPosition;
                     communityTable.DisplayTableCards(roundPosition);
-                    ++roundPosition; 
                 }
+                communityTable.TableReset();
+                myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Replay_Game_Text);
                 Console.WriteLine("Would you like to play again? (yes/no)");
                 string gameContinue = Console.ReadLine();
                 playGame = gameInputs.CheckConfirmation(gameContinue);
-                communityTable.TableReset();
+                
             }
 
         }  

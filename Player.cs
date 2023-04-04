@@ -14,6 +14,7 @@ namespace NEA_PROJECT
         public Player()
         {
         }
+
         public int AIBetAmount()
         {
             bool goodHand = false;

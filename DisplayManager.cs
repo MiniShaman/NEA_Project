@@ -26,9 +26,11 @@ namespace NEA_PROJECT
             Chips_AI_Player,
             Player_Round_Bet_Total,
             AI_Player_Round_Bet_Total,
-            BetTextDisplay,
-            BestHandCombo,
-            BestHandName
+            Bet_Text_Display,
+            Best_Hand_Combo,
+            Best_Hand_Name,
+            Replay_Game_Text,
+            Round_Point_Text
         }
 
         public void InitialiseDisplay()
@@ -60,6 +62,9 @@ namespace NEA_PROJECT
 
             SetCursorPosition(DisplayPosition.Chips_Table_Total);
             Console.WriteLine("Table Total: 0");
+
+            SetCursorPosition(DisplayPosition.Round_Point_Text);
+            Console.WriteLine("Round Place: " + Program.roundPosition);
         }
 
         public void UpdateDisplay(Player player, Player aiPlayer)
@@ -73,6 +78,8 @@ namespace NEA_PROJECT
             UpdateDisplayLine("Total Bet in Round: " + aiPlayer.myChips.roundBetTotal, DisplayPosition.AI_Player_Round_Bet_Total);
 
             UpdateDisplayLine("Table Total: " + Program.TableTotal, DisplayPosition.Chips_Table_Total);
+
+            UpdateDisplayLine("Round Place: " + Program.roundPosition, DisplayPosition.Round_Point_Text,5);
 
         }
 
@@ -130,14 +137,20 @@ namespace NEA_PROJECT
                 case DisplayPosition.Player_Round_Bet_Total:
                     Console.SetCursorPosition(14, 22);
                     break;
-                case DisplayPosition.BetTextDisplay:
+                case DisplayPosition.Bet_Text_Display:
                     Console.SetCursorPosition(0, 26);
                     break;
-                case DisplayPosition.BestHandCombo:
+                case DisplayPosition.Best_Hand_Combo:
                     Console.SetCursorPosition(0, 31);
                     break;
-                case DisplayPosition.BestHandName:
+                case DisplayPosition.Best_Hand_Name:
                     Console.SetCursorPosition(3, 33);
+                    break;
+                case DisplayPosition.Replay_Game_Text:
+                    Console.SetCursorPosition(0, 32);
+                    break;
+                case DisplayPosition.Round_Point_Text:
+                    Console.SetCursorPosition(55, 7);
                     break;
                 default: 
 

@@ -20,5 +20,19 @@ namespace NEA_PROJECT
                 hand[i] = new Card();
             }
         }
+        public void CombineHandAndTableCards(Player player)
+        {
+            int handcounter = 0;
+            for (int i = 0; i < Table.tableCards.Length; ++i)
+            {
+                player.myBestHand.bestHand[handcounter] = Table.tableCards[handcounter];
+                ++handcounter;
+            }            
+            for(int j = 0; j<playerHand.Length;++j)
+            {
+                player.myBestHand.bestHand[handcounter] = playerHand[j];
+                ++handcounter;
+            }
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace NEA_PROJECT
         {
             if (!AI)
             {
-                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
+                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Text_Display);
 
                 Console.WriteLine("How much would you like to bet?");
 

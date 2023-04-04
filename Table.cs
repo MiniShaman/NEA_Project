@@ -6,9 +6,7 @@ namespace NEA_PROJECT
 {
     public class Table
     {
-        //public static int bestHandChoiceLimit = 7;
-        //public static int bestHandCounter = 0;
-        //public static Card[] EvaluationHand = new Card[bestHandChoiceLimit];
+        public static Card[] tableCards = new Card[5];
         public Table()
         {
 
@@ -30,8 +28,8 @@ namespace NEA_PROJECT
             Flop,
             Turn,
             River,
-            FinalBets,
-            FinishRound
+            Final_Bets,
+            Finish_Round
            
         }
         public void DisplayTableCards(RoundPhases Round)
@@ -40,13 +38,13 @@ namespace NEA_PROJECT
             {
                 case RoundPhases.Flop:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop1);
-                    Program.myDeck.DealAndDisplayCard();
+                    tableCards[0] = Program.myDeck.DealAndDisplayCard();
                     
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop2);
-                    Program.myDeck.DealAndDisplayCard();
+                    tableCards[1] = Program.myDeck.DealAndDisplayCard();
                     
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop3);
-                    Program.myDeck.DealAndDisplayCard();
+                    tableCards[2] = Program.myDeck.DealAndDisplayCard();
 
                     // displays the best current hand
                     //player.myHand.SortCardValues(player.myBestHand.EvaluationHand, HandEvaluation.flopCardCheckpoint);
@@ -55,7 +53,7 @@ namespace NEA_PROJECT
                     break;
                 case RoundPhases.Turn:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Turn);
-                    Program.myDeck.DealAndDisplayCard();
+                    tableCards[3] = Program.myDeck.DealAndDisplayCard();
 
                     // displays the best current hand
                     //player.myHand.SortCardValues(player.myBestHand.EvaluationHand, HandEvaluation.turnCardCheckpoint);
@@ -64,7 +62,7 @@ namespace NEA_PROJECT
                     break;
                 case RoundPhases.River:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.River);
-                    Program.myDeck.DealAndDisplayCard();
+                    tableCards[4] = Program.myDeck.DealAndDisplayCard();
 
                     // displays the best hand
                     //player.myHand.SortCardValues(player.myBestHand.EvaluationHand, HandEvaluation.riverCardCheckpoint);

@@ -51,18 +51,22 @@ namespace NEA_PROJECT
         }
         public bool CheckConfirmation(string response)
         {
-            beginnnig:
-            response.ToLower();
-            if (response == "yes")
-                return true;
-            else if (response == "no")
-            return false;
-            else
+            int validResult = -1;
+            
+            while (validResult == -1)
             {
-                response = Console.ReadLine();
-                goto beginnnig;
+                response.ToLower();
+                if (response == "yes" || response == "y")
+                    validResult = 1;
+                else if (response == "no" || response == "n")
+                    validResult = 0;
+                else
+                {
+                    response = Console.ReadLine();
+                }
             }
 
+            return validResult == 1;
         }
     }
 }

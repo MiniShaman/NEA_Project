@@ -12,7 +12,7 @@ namespace NEA_PROJECT
 
         public static int minHandSize = 5;
 
-        public static Card[] bestHand = new Card[7];
+        public  Card[] bestHand = new Card[7];
 
         public enum PokerHand
         {
@@ -50,7 +50,7 @@ namespace NEA_PROJECT
         //
         public PokerHand GetBestHand(Card[] cards, int NumOfCards)
         {
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandName);
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Best_Hand_Name);
             if (NumOfCards >= minHandSize)
             {
                 if (IsHandAStraightFlush(cards,NumOfCards)) 
@@ -415,5 +415,6 @@ namespace NEA_PROJECT
                 }
             }
         }
+        
     }
 }

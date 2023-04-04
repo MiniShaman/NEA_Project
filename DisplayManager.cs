@@ -38,7 +38,7 @@ namespace NEA_PROJECT
             Console.Clear();
         }
 
-        public void SetupDisplay(int startChips)
+        public void SetupDisplay(int playerChips, int aiChips)
         {
             Console.WriteLine("*****************************************************************");
             Console.WriteLine("**                                                             **");
@@ -46,43 +46,41 @@ namespace NEA_PROJECT
             Console.WriteLine("**                                                             **");
             Console.WriteLine("*****************************************************************");
 
-            SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-            Console.WriteLine("Chips: " + startChips);
+            SetCursorPosition(DisplayPosition.Chips_Player);
+            Console.WriteLine("Chips: " + playerChips);
 
-            SetCursorPosition(DisplayManager.DisplayPosition.Chips_AI_Player);
-            Console.WriteLine("Chips: " + startChips);
+            SetCursorPosition(DisplayPosition.Chips_AI_Player);
+            Console.WriteLine("Chips: " + aiChips);
 
-            SetCursorPosition(DisplayManager.DisplayPosition.Player_Round_Bet_Total);
+            SetCursorPosition(DisplayPosition.Player_Round_Bet_Total);
             Console.WriteLine("Total Bet in Round: 0");
 
-            SetCursorPosition(DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total);
-            Console.WriteLine("Total Bet in Round: ");
+            SetCursorPosition(DisplayPosition.AI_Player_Round_Bet_Total);
+            Console.WriteLine("Total Bet in Round: 0");
 
-            SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
+            SetCursorPosition(DisplayPosition.Chips_Table_Total);
             Console.WriteLine("Table Total: 0");
         }
 
         public void UpdateDisplay(Player player, Player aiPlayer)
         {
-            SetCursorPosition(DisplayPosition.Chips_Player);
-            ClearText("Chips: " + player.myChips.PlayerChipCount);
-            Console.WriteLine("Chips: " + player.myChips.PlayerChipCount);
+            UpdateDisplayLine("Chips: " + player.myChips.PlayerChipCount, DisplayPosition.Chips_Player);
 
-            SetCursorPosition(DisplayPosition.Chips_AI_Player);
-            ClearText("Chips: " + aiPlayer.myChips.PlayerChipCount);
-            Console.WriteLine("Chips: " + aiPlayer.myChips.PlayerChipCount);
+            UpdateDisplayLine("Chips: " + aiPlayer.myChips.PlayerChipCount, DisplayPosition.Chips_AI_Player);
 
-            SetCursorPosition(DisplayPosition.Player_Round_Bet_Total);
-            ClearText("Total Bet in Round: " + player.myChips.roundBetTotal);
-            Console.WriteLine("Total Bet in Round: " + player.myChips.roundBetTotal);
+            UpdateDisplayLine("Total Bet in Round: " + player.myChips.roundBetTotal, DisplayPosition.Player_Round_Bet_Total);
 
-            SetCursorPosition(DisplayPosition.AI_Player_Round_Bet_Total);
-            ClearText("Total Bet in Round: " + aiPlayer.myChips.roundBetTotal);
-            Console.WriteLine("Total Bet in Round: " + aiPlayer.myChips.roundBetTotal);
+            UpdateDisplayLine("Total Bet in Round: " + aiPlayer.myChips.roundBetTotal, DisplayPosition.AI_Player_Round_Bet_Total);
 
-            SetCursorPosition(DisplayPosition.Chips_Table_Total);
-            ClearText("Table Total: " + Program.TableTotal);
-            Console.WriteLine("Table Total: " + Program.TableTotal);
+            UpdateDisplayLine("Table Total: " + Program.TableTotal, DisplayPosition.Chips_Table_Total);
+
+        }
+
+        public void UpdateDisplayLine(string text, DisplayPosition displayPosition, int errorAmount = 2)
+        {
+            SetCursorPosition(displayPosition);
+            ClearText(text.Length + errorAmount);
+            Console.WriteLine(text);
         }
 
 

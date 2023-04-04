@@ -24,17 +24,21 @@ namespace NEA_PROJECT
             DisplayTableCards();
             TableChips.BetAmount();*/
         }
-        public enum TableCards
+        public enum RoundPhases
         {
+            Pre_Flop,
             Flop,
             Turn,
-            River
+            River,
+            FinalBets,
+            FinishRound
+           
         }
-        public void DisplayTableCards(TableCards Round, Player player)
+        public void DisplayTableCards(RoundPhases Round)
         {
             switch (Round)
             {
-                case TableCards.Flop:
+                case RoundPhases.Flop:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Flop1);
                     Program.myDeck.DealAndDisplayCard();
                     
@@ -49,7 +53,7 @@ namespace NEA_PROJECT
                     //Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
                     //Program.myDisplay.DisplayAllCards(player.myBestHand.EvaluationHand, HandEvaluation.flopCardCheckpoint);
                     break;
-                case TableCards.Turn:
+                case RoundPhases.Turn:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Turn);
                     Program.myDeck.DealAndDisplayCard();
 
@@ -58,7 +62,7 @@ namespace NEA_PROJECT
                     //Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
                     //Program.myDisplay.DisplayAllCards(player.myBestHand.EvaluationHand, HandEvaluation.turnCardCheckpoint);
                     break;
-                case TableCards.River:
+                case RoundPhases.River:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.River);
                     Program.myDeck.DealAndDisplayCard();
 
@@ -151,9 +155,19 @@ namespace NEA_PROJECT
             EvaluationHand[bestHandCounter] = CurrentCard;
             ++bestHandCounter;
         }*/
-        public void RoundEnd()
+        public bool EqualBetCheck(int playerBet, int aiBet)
         {
-
+            if (playerBet == aiBet)
+                return true;
+            else
+                return false;
+        }
+        public void TableReset()
+        {
+            Console.Clear();
+            Program.myDisplay.InitialiseDisplay();
+            Program.myDisplay.SetupDisplay(Program.player.myChips.PlayerChipCount, Program.aiPlayer.myChips.PlayerChipCount);
+            Program.myDeck.Shuffle();
         }
     }
 }

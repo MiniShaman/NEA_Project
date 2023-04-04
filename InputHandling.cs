@@ -49,5 +49,20 @@ namespace NEA_PROJECT
             }
             return (returnVal);*/
         }
+        public bool CheckConfirmation(string response)
+        {
+            beginnnig:
+            response.ToLower();
+            if (response == "yes")
+                return true;
+            else if (response == "no")
+            return false;
+            else
+            {
+                response = Console.ReadLine();
+                goto beginnnig;
+            }
+
+        }
     }
 }

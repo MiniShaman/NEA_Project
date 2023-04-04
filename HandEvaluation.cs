@@ -53,8 +53,9 @@ namespace NEA_PROJECT
             Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandName);
             if (NumOfCards >= minHandSize)
             {
-                //if (IsHandAStraightFlush()) return PokerHand.StraightFlush;
-                if (IsHandAPoker(cards, NumOfCards))
+                if (IsHandAStraightFlush(cards,NumOfCards)) 
+                    return PokerHand.StraightFlush;
+                else if (IsHandAPoker(cards, NumOfCards))
                     return PokerHand.Poker;
                 else if (IsHandAFullHouse(cards, NumOfCards))
                     return PokerHand.FullHouse;

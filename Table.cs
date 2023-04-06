@@ -9,7 +9,7 @@ namespace NEA_PROJECT
         public static Card[] tableCards = new Card[5];
         public Table()
         {
-
+            Hand.InitialiseHand(tableCards);
         }
         public void FullRound()
         {
@@ -166,6 +166,29 @@ namespace NEA_PROJECT
             Program.myDisplay.InitialiseDisplay();
             Program.myDisplay.SetupDisplay(Program.player.myChips.PlayerChipCount, Program.aiPlayer.myChips.PlayerChipCount);
             Program.myDeck.Shuffle();
+        }
+        public void CheckForWin(Player player, Player AI, int winner)
+        {
+            switch (winner)
+            {
+                case 1:
+                    Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.End_Game_Text);
+                    Console.WriteLine("The player wins the round");
+                    player.myChips.PlayerChipCount += Program.TableTotal;
+                    break;
+                case -1:
+                    Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.End_Game_Text);
+                    Console.WriteLine("The AI wins the round");
+                    AI.myChips.PlayerChipCount += Program.TableTotal;
+                    break;
+                case 0:
+                    Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.End_Game_Text);
+                    Console.WriteLine("The round is a draw");
+                    int splitWinning = Program.TableTotal / 2;
+                    player.myChips.PlayerChipCount += splitWinning;
+                    AI.myChips.PlayerChipCount += splitWinning;
+                        break;
+            }
         }
     }
 }

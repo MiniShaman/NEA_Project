@@ -27,10 +27,13 @@ namespace NEA_PROJECT
             Player_Round_Bet_Total,
             AI_Player_Round_Bet_Total,
             Bet_Text_Display,
-            Best_Hand_Combo,
-            Best_Hand_Name,
+            Player_Best_Hand_Combo,
+            Player_Best_Hand_Name,
+            AI_Best_Hand_Combo,
+            AI_Best_Hand_Name,
             Replay_Game_Text,
-            Round_Point_Text
+            Round_Point_Text,
+            End_Game_Text
         }
 
         public void InitialiseDisplay()
@@ -140,13 +143,22 @@ namespace NEA_PROJECT
                 case DisplayPosition.Bet_Text_Display:
                     Console.SetCursorPosition(0, 26);
                     break;
-                case DisplayPosition.Best_Hand_Combo:
+                case DisplayPosition.Player_Best_Hand_Combo:
                     Console.SetCursorPosition(0, 31);
                     break;
-                case DisplayPosition.Best_Hand_Name:
+                case DisplayPosition.Player_Best_Hand_Name:
                     Console.SetCursorPosition(3, 33);
                     break;
+                case DisplayPosition.AI_Best_Hand_Combo:
+                    Console.SetCursorPosition(34, 20);
+                    break;
+                case DisplayPosition.AI_Best_Hand_Name:
+                    Console.SetCursorPosition(37, 22);
+                    break;
                 case DisplayPosition.Replay_Game_Text:
+                    Console.SetCursorPosition(0, 35);
+                    break;
+                case DisplayPosition.End_Game_Text:
                     Console.SetCursorPosition(0, 32);
                     break;
                 case DisplayPosition.Round_Point_Text:

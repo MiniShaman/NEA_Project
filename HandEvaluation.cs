@@ -14,6 +14,8 @@ namespace NEA_PROJECT
 
         public  Card[] bestHand = new Card[7];
 
+        public int[] playerBestCardVals = new int[5];
+
         public enum PokerHand
         {
             HighCard,
@@ -50,7 +52,7 @@ namespace NEA_PROJECT
         //
         public PokerHand GetBestHand(Card[] cards, int NumOfCards)
         {
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Best_Hand_Name);
+            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Player_Best_Hand_Name);
             if (NumOfCards >= minHandSize)
             {
                 if (IsHandAStraightFlush(cards,NumOfCards)) 
@@ -398,7 +400,7 @@ namespace NEA_PROJECT
                 }
             }
         }
-        public void CopyDuplicatesToBestHand(Card[] cards, int NumOfCards,int cardMatchVal, int valueAddLimit, int bestHandIndex = 0)
+        public void CopyDuplicatesToBestHand(Card[] cards, int NumOfCards, int cardMatchVal, int valueAddLimit, int bestHandIndex = 0)
         {
             valueAddLimit += bestHandIndex;
             for (int i = 0; i < NumOfCards; ++i)
@@ -415,6 +417,5 @@ namespace NEA_PROJECT
                 }
             }
         }
-        
     }
 }

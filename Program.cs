@@ -21,6 +21,7 @@ namespace NEA_PROJECT
         public static int TableTotal = 0;
         public static Table.RoundPhases roundPosition;
         public static bool playGame = true;
+        //public static int gameWinner;
         static void Main(string[] args)
         {
             handTest.DoTests(player);
@@ -91,9 +92,13 @@ namespace NEA_PROJECT
                         playersTurn = !playersTurn;
                         myDisplay.UpdateDisplay(player, aiPlayer);
                     }
+                    player.HandEvaluatorSystem();
+                    aiPlayer.HandEvaluatorSystem();
                     ++roundPosition;
                     communityTable.DisplayTableCards(roundPosition);
                 }
+                communityTable.CheckForWin(player,aiPlayer, player.bestHand.CompareHands(player, aiPlayer));
+                Console.ReadLine();
                 communityTable.TableReset();
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Replay_Game_Text);
                 Console.WriteLine("Would you like to play again? (yes/no)");

@@ -33,7 +33,9 @@ namespace NEA_PROJECT
             AI_Best_Hand_Name,
             Replay_Game_Text,
             Round_Point_Text,
-            End_Game_Text
+            End_Game_Text,
+            Player_Check_Or_All_In_Text,
+            Bet_Or_Fold_Text
         }
 
         public void InitialiseDisplay()
@@ -163,6 +165,12 @@ namespace NEA_PROJECT
                     break;
                 case DisplayPosition.Round_Point_Text:
                     Console.SetCursorPosition(55, 7);
+                    break;
+                case DisplayPosition.Player_Check_Or_All_In_Text:
+                    Console.SetCursorPosition(0,32);
+                    break;
+                case DisplayPosition.Bet_Or_Fold_Text:
+                    Console.SetCursorPosition(0, 29);
                     break;
                 default: 
 

@@ -8,20 +8,30 @@ namespace NEA_PROJECT
     {
         public int PlayerChipCount = 100;
         public int roundBetTotal = 0;
-        public static int MinBetAmount = 1;
+        public static int MinBetAmount = 0;
         public Chips()
         {
 
         }    
-        public void BetAmount(DisplayManager.DisplayPosition playerChips, DisplayManager.DisplayPosition playerTotalBet, bool AI, int betPlaced = 0 )
+        public void BetAmount(Player player,Player AI,DisplayManager.DisplayPosition playerChips, DisplayManager.DisplayPosition playerTotalBet, bool isAnAI, int betPlaced = 0 )
         {
-            if (!AI)
+
+                
+            if (!isAnAI)
             {
-                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Text_Display);
+                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Or_Fold_Text);
+                Console.WriteLine("Bet or Fold?");
+                string gameDecision = Program.gameInputs.StringInput();
+                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Or_Fold_Text);
+                Program.myDisplay.ClearText("Bet or Fold?");
+                if (Program.gameInputs.DoesPlayerBet(player,gameDecision))
+                {
+                    Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Text_Display);
 
-                Console.WriteLine("How much would you like to bet?");
+                    Console.WriteLine("How much would you like to bet?");
 
-                betPlaced = Program.gameInputs.BetValueCheck(PlayerChipCount);
+                    betPlaced = Program.gameInputs.BetValueCheck(PlayerChipCount, player, AI, isAnAI);
+                }
             }
 
             //Program.myDisplay.SetCursorPosition(playerChips);

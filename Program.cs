@@ -21,7 +21,7 @@ namespace NEA_PROJECT
         public static int TableTotal = 0;
         public static Table.RoundPhases roundPosition;
         public static bool playGame = true;
-        //public static int gameWinner;
+        public static bool firstBet = true;
         static void Main(string[] args)
         {
             handTest.DoTests(player);
@@ -67,39 +67,63 @@ namespace NEA_PROJECT
             {
                 player.myChips.roundBetTotal = 0;
                 aiPlayer.myChips.roundBetTotal = 0;
+
                 communityTable.DealPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);
                 communityTable.DealPlayerCards(aiPlayer, DisplayManager.DisplayPosition.AI_Card1, DisplayManager.DisplayPosition.AI_Card2);
 
+                firstBet = true;
                 bool playersTurn = true;
+
                 roundPosition = Table.RoundPhases.Pre_Flop;
 
                 while (roundPosition != Table.RoundPhases.Finish_Round)
                 {
                     myDisplay.UpdateDisplay(player, aiPlayer);
-                    bool firstBet = true;
-                    while (!communityTable.EqualBetCheck(player.myChips.roundBetTotal,aiPlayer.myChips.roundBetTotal) || firstBet)
+                    firstBet = true;
+                    while (!communityTable.TableBetsCheck(player, aiPlayer,player.myChips.roundBetTotal,aiPlayer.myChips.roundBetTotal) || firstBet)
                     {
                         firstBet = false; 
-                        if (playersTurn)
+                        if (playersTurn && !player.playerAllIn)
                         {
-                            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);                            
+                            player.myChips.BetAmount(player,aiPlayer,DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
+                            if(player.playerFolded)
+                            {
+                                break;
+                            }
                         }
-                        else
+                        else if (!playersTurn && !aiPlayer.playerAllIn)
                         {
-                            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());                            
+                            aiPlayer.myChips.BetAmount(player, aiPlayer,DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount(aiPlayer,player));
+                            if (aiPlayer.playerFolded)
+                            {
+                                break;
+                            }
                         }
-            
+                        if (player.playerFolded || aiPlayer.playerFolded || (player.playerAllIn && aiPlayer.playerAllIn))
+                        {
+                            break;
+                        }
+                        
+
                         playersTurn = !playersTurn;
                         myDisplay.UpdateDisplay(player, aiPlayer);
                     }
+
                     player.HandEvaluatorSystem();
                     aiPlayer.HandEvaluatorSystem();
+                    
+                    if (player.playerFolded || aiPlayer.playerFolded || (player.playerAllIn && aiPlayer.playerAllIn))
+                    {
+                        break;
+                    }
+                    //player.HandEvaluatorSystem();
+                    //aiPlayer.HandEvaluatorSystem();
                     ++roundPosition;
                     communityTable.DisplayTableCards(roundPosition);
                 }
                 communityTable.CheckForWin(player,aiPlayer, player.bestHand.CompareHands(player, aiPlayer));
                 Console.ReadLine();
-                communityTable.TableReset();
+                communityTable.TableReset(player, aiPlayer);
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Replay_Game_Text);
                 Console.WriteLine("Would you like to play again? (yes/no)");
                 string gameContinue = Console.ReadLine();

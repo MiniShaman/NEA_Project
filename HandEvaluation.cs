@@ -12,7 +12,7 @@ namespace NEA_PROJECT
 
         public static int minHandSize = 5;
 
-        public  Card[] bestHand = new Card[7];
+        public  Card[] playersBestHand = new Card[7];
 
         public int[] playerBestCardVals = new int[5];
 
@@ -81,8 +81,8 @@ namespace NEA_PROJECT
         {
             if (IsHandAFlush(cards, NumOfCards))
             {
-                Card[] BestFlushHand = new Card[GetNumberOfValidCards(bestHand)];
-                Array.Copy(bestHand, BestFlushHand, BestFlushHand.Length);
+                Card[] BestFlushHand = new Card[GetNumberOfValidCards(playersBestHand)];
+                Array.Copy(playersBestHand, BestFlushHand, BestFlushHand.Length);
                 if (IsHandAStraight(BestFlushHand, BestFlushHand.Length))
                 {
                     return true;
@@ -94,7 +94,7 @@ namespace NEA_PROJECT
         public bool IsHandAPoker(Card[] cards, int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
-            Array.Clear(bestHand, 0, bestHand.Length);
+            Array.Clear(playersBestHand, 0, playersBestHand.Length);
             int pokerPoint = 4;
             int duplicateMatch = DuplicateValueCheck(cards, NumOfCards, pokerPoint);
             if (duplicateMatch != 0)
@@ -108,7 +108,7 @@ namespace NEA_PROJECT
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
             
-            Array.Clear(bestHand, 0, bestHand.Length);
+            Array.Clear(playersBestHand, 0, playersBestHand.Length);
 
             int valueTriple = 3;
             int valuePair = 2;
@@ -128,7 +128,7 @@ namespace NEA_PROJECT
         public bool IsHandAFlush(Card[] cards, int NumOfCards) // Checks Cards to see if your hand is a flush
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
-            Array.Clear(bestHand, 0, bestHand.Length);
+            Array.Clear(playersBestHand, 0, playersBestHand.Length);
 
             int heartSuitCounter = 0;
             int clubSuitCounter = 0;
@@ -178,7 +178,7 @@ namespace NEA_PROJECT
 
         public bool IsHandAStraight(Card[] cards, int NumOfCards)
         {
-            Array.Clear(bestHand, 0, bestHand.Length);
+            Array.Clear(playersBestHand, 0, playersBestHand.Length);
 
             Debug.Assert(NumOfCards > 0);
             Debug.Assert(CheckCardsDescend(cards, GetNumberOfValidCards(cards)));
@@ -201,22 +201,22 @@ namespace NEA_PROJECT
                         if (firstEntry)
                         {
                             straightHigh = inputCard.Value;
-                            bestHand[bestHandIndex] = inputCard;
+                            playersBestHand[bestHandIndex] = inputCard;
                             ++bestHandIndex;
-                            bestHand[bestHandIndex] = compareCard;
+                            playersBestHand[bestHandIndex] = compareCard;
                             ++bestHandIndex;
                             firstEntry = false;
                             ++matchesFound;
                         }
                         else
                         {
-                            bestHand[bestHandIndex] = compareCard;
+                            playersBestHand[bestHandIndex] = compareCard;
                             ++bestHandIndex;
                             ++matchesFound;
                         }
                         break;
                     case CardComparison.NonAdjacentVal:
-                        Array.Clear(bestHand, 0, bestHand.Length);
+                        Array.Clear(playersBestHand, 0, playersBestHand.Length);
                         straightHigh = 0;
                         matchesFound = 0;
                         bestHandIndex = 0;
@@ -228,7 +228,7 @@ namespace NEA_PROJECT
                 }
                 if(straightHigh == 5 && matchesFound == 3 && aceFound)
                 {
-                    bestHand[bestHandIndex] = cards[0];
+                    playersBestHand[bestHandIndex] = cards[0];
                     return true;
                 }
                 if (matchesFound >= minHandSize - 1)
@@ -243,7 +243,7 @@ namespace NEA_PROJECT
         public bool IsHandAThreeOfAKind(Card []cards, int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
-            Array.Clear(bestHand, 0, bestHand.Length);
+            Array.Clear(playersBestHand, 0, playersBestHand.Length);
 
             int threeOfAKindPoint = 3;
             int duplicateMatch = DuplicateValueCheck(cards, NumOfCards, threeOfAKindPoint);
@@ -257,7 +257,7 @@ namespace NEA_PROJECT
         public bool IsHandATwoPair(Card[]cards,int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
-            Array.Clear(bestHand, 0, bestHand.Length);
+            Array.Clear(playersBestHand, 0, playersBestHand.Length);
 
             int twoPairPoint = 2;
             int duplicateMatch = DuplicateValueCheck(cards, NumOfCards, twoPairPoint);
@@ -276,7 +276,7 @@ namespace NEA_PROJECT
         public bool IsHandAPair(Card[]cards,int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
-            Array.Clear(bestHand, 0, bestHand.Length);
+            Array.Clear(playersBestHand, 0, playersBestHand.Length);
 
             int pairPoint = 2;
             int duplicateMatch = DuplicateValueCheck(cards, NumOfCards, pairPoint);
@@ -302,7 +302,7 @@ namespace NEA_PROJECT
                     }                                                                                                                                                                             
                 }
             }
-             while(CheckCardsDescend(cards,NumOfCards) == false);
+            while(CheckCardsDescend(cards,NumOfCards) == false);
             return cards;
         }
         public bool CheckCardsDescend(Card [] cardList, int NumOfCards)
@@ -388,14 +388,14 @@ namespace NEA_PROJECT
         }
         public void CopySuitToBestHand(Card [] cards, int NumOfCards, Card.CardSuit SuitChoice)
         {
-            Array.Clear(bestHand, 0, bestHand.Length);
+            Array.Clear(playersBestHand, 0, playersBestHand.Length);
 
             int bestHandIndex = 0;
             for(int i = 0;i < NumOfCards; ++i)
             {
                 if (cards[i].Suit == SuitChoice)
                 {
-                    bestHand[bestHandIndex] = cards[i];
+                    playersBestHand[bestHandIndex] = cards[i];
                     ++bestHandIndex;
                 }
             }
@@ -407,7 +407,7 @@ namespace NEA_PROJECT
             {
                 if (cards[i].Value == cardMatchVal)
                 {
-                    bestHand[bestHandIndex] = cards[i];
+                    playersBestHand[bestHandIndex] = cards[i];
                     ++bestHandIndex;
                 }
 

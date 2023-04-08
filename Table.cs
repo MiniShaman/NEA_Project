@@ -28,7 +28,6 @@ namespace NEA_PROJECT
             Flop,
             Turn,
             River,
-            Final_Bets,
             Finish_Round
            
         }
@@ -153,33 +152,56 @@ namespace NEA_PROJECT
             EvaluationHand[bestHandCounter] = CurrentCard;
             ++bestHandCounter;
         }*/
-        public bool EqualBetCheck(int playerBet, int aiBet)
+        public bool TableBetsCheck(Player player, Player AI,int playerBet, int aiBet) // Checks all incoming bets to see if they match or a player is all in to allow the game to progress
         {
-            if (playerBet == aiBet)
+            bool playerBetLimit = false;
+            bool aiBetLimit = false;
+            if(player.playerAllIn || playerBet == aiBet)
+                playerBetLimit = true;
+            if (AI.playerAllIn || aiBet == playerBet)
+                aiBetLimit = true;
+            if (aiBetLimit && playerBetLimit)
                 return true;
             else
                 return false;
         }
-        public void TableReset()
+        public void TableReset(Player player, Player AI) // Sets up Table so the game can be replayed
         {
             Console.Clear();
+            Program.TableTotal = 0;
+            Array.Clear(player.myBestHand.playersBestHand, 0, player.myBestHand.playersBestHand.Length);
+            Array.Clear(player.myBestHand.playersBestHand, 0, player.myBestHand.playersBestHand.Length);
+            player.playerFolded = false;
+            AI.playerFolded = false;
+            player.playerAllIn = false;
+            AI.playerAllIn = false;
             Program.myDisplay.InitialiseDisplay();
             Program.myDisplay.SetupDisplay(Program.player.myChips.PlayerChipCount, Program.aiPlayer.myChips.PlayerChipCount);
             Program.myDeck.Shuffle();
         }
         public void CheckForWin(Player player, Player AI, int winner)
         {
+            if(player.playerFolded)
+            {
+                winner = -1;
+            }
+            else if(AI.playerFolded)
+            {
+                winner = 1;
+            }
             switch (winner)
             {
                 case 1:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.End_Game_Text);
                     Console.WriteLine("The player wins the round");
                     player.myChips.PlayerChipCount += Program.TableTotal;
+                    Program.myDisplay.UpdateDisplay(player, AI);
                     break;
                 case -1:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.End_Game_Text);
                     Console.WriteLine("The AI wins the round");
                     AI.myChips.PlayerChipCount += Program.TableTotal;
+                    Program.myDisplay.UpdateDisplay(player, AI);
                     break;
                 case 0:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.End_Game_Text);
@@ -187,7 +209,18 @@ namespace NEA_PROJECT
                     int splitWinning = Program.TableTotal / 2;
                     player.myChips.PlayerChipCount += splitWinning;
                     AI.myChips.PlayerChipCount += splitWinning;
-                        break;
+                    Program.myDisplay.UpdateDisplay(player, AI);
+                    break;
+            }
+            if(player.myChips.PlayerChipCount == 0)
+            {
+                Console.WriteLine("AI wins the game");
+                Environment.Exit(0);
+            }
+            else if(AI.myChips.PlayerChipCount == 0)
+            {
+                Console.WriteLine("Player wins the game");
+                Environment.Exit(0);
             }
         }
     }

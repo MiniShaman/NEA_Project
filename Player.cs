@@ -10,13 +10,29 @@ namespace NEA_PROJECT
         public HandEvaluation myBestHand = new HandEvaluation(); // This is the best possible hand you can make from all the cards
         public Hand myHand = new Hand();
         public HandStrength bestHand = new HandStrength();
+        public bool playerFolded = false;
+        public bool playerAllIn = false;
         //public HandStrength myBestHand = new HandStrength();
 
         public Player()
         {
         }
+        public int AIBetAmount(Player AI, Player player)
+        {
+            HandEvaluatorSystem();
+            bestHand.AssignHandStrengthVals(AI);
+            if(myBestHand.playerBestCardVals[0] > 7)
+            {
+                return 8;
+            }
+            else
+            {
+                return player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
+            }
 
-        public int AIBetAmount()
+        }
+
+        /*public int AIBetAmount()
         {
             bool goodHand = false;
             for(int i = 0; i < myHand.playerHand.Length;++i)
@@ -34,17 +50,16 @@ namespace NEA_PROJECT
             }
             return 5;
 
-        }
+        }*/
         public HandEvaluation.PokerHand HandEvaluatorSystem() // Combines a players hand with the table cards, sorts the values and then gets the best hand
         {
             CombineHandAndTableCards();
             myBestHand.SortCardValues(bestHand.EvaluationHand, bestHand.EvaluationHand.Length);
-            return myBestHand.GetBestHand(bestHand.EvaluationHand, bestHand.EvaluationHand.Length);
+            return myBestHand.GetBestHand(bestHand.EvaluationHand, myBestHand.GetNumberOfValidCards(bestHand.EvaluationHand));
             
         }
         public void CombineHandAndTableCards()
         {
-            Hand.InitialiseHand(bestHand.EvaluationHand);
             int handcounter = 0;
             for (int i = 0; i < Table.tableCards.Length; ++i)
             {

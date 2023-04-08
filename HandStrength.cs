@@ -32,7 +32,7 @@ namespace NEA_PROJECT
         {
             player.myBestHand.SortCardValues(player.myHand.playerHand, player.myHand.playerHand.Length);
             player.myBestHand.playerBestCardVals[0] = (int)player.myBestHand.GetBestHand(EvaluationHand,7);
-            player.myBestHand.playerBestCardVals[1] = player.myBestHand.bestHand[0].Value; 
+            player.myBestHand.playerBestCardVals[1] = player.myBestHand.playersBestHand[0].Value; 
             player.myBestHand.playerBestCardVals[2] = player.myBestHand.DuplicateValueCheck(EvaluationHand, 7, 2, player.myBestHand.playerBestCardVals[1]);
             player.myBestHand.playerBestCardVals[3] = player.myHand.playerHand[0].Value;
             player.myBestHand.playerBestCardVals[4] = player.myHand.playerHand[1].Value;

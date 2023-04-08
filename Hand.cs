@@ -20,6 +20,17 @@ namespace NEA_PROJECT
             {
                 hand[i] = new Card();
             }
-        }        
+        }
+        public static Card [] InitialiseNullCards(Card[] cards)
+        {
+            for(int i = 0; i < cards.Length;++i)
+            {
+                if(cards[i] == null)
+                {
+                    cards[i] = new Card();
+                }
+            }
+            return cards;
+        }
     }
 }

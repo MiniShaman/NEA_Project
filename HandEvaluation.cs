@@ -18,6 +18,7 @@ namespace NEA_PROJECT
 
         public enum PokerHand
         {
+            NoHand,
             HighCard,
             Pair,
             TwoPair,
@@ -53,7 +54,7 @@ namespace NEA_PROJECT
         public PokerHand GetBestHand(Card[] cards, int NumOfCards)
         {
             Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Player_Best_Hand_Name);
-            if (NumOfCards >= minHandSize)
+            if (GetNumberOfValidCards(cards) >= minHandSize)
             {
                 if (IsHandAStraightFlush(cards,NumOfCards)) 
                     return PokerHand.StraightFlush;
@@ -74,7 +75,15 @@ namespace NEA_PROJECT
             {
                 return PokerHand.Pair;
             }
-            return PokerHand.HighCard;
+            else
+            {
+                for(int i = 0;i<GetNumberOfValidCards(cards);++i)
+                {
+                    playersBestHand[i] = cards[i];
+                }
+                return PokerHand.HighCard;
+            }
+            
         }
 
         public bool IsHandAStraightFlush(Card[] cards, int NumOfCards)
@@ -293,13 +302,16 @@ namespace NEA_PROJECT
             {
                 for (int i = 0; i < NumOfCards - 1; ++i)
                 {
-                    Card switchCard;
-                    if (cards[i].Value < cards[i + 1].Value)
+                    if (cards[i] != null)
                     {
-                        switchCard = cards[i];
-                        cards[i] = cards[i + 1];
-                        cards[i + 1] = switchCard;
-                    }                                                                                                                                                                             
+                        Card switchCard;
+                        if (cards[i].Value < cards[i + 1].Value)
+                        {
+                            switchCard = cards[i];
+                            cards[i] = cards[i + 1];
+                            cards[i + 1] = switchCard;
+                        }
+                    }
                 }
             }
             while(CheckCardsDescend(cards,NumOfCards) == false);
@@ -309,10 +321,13 @@ namespace NEA_PROJECT
         {
             for(int i = 0;i<NumOfCards-1;++i)
             {
-               if(cardList[i].Value<cardList[i+1].Value)
-               {
-                    return false;
-               }
+                if (cardList[i] != null)
+                {
+                    if (cardList[i].Value < cardList[i + 1].Value)
+                    {
+                        return false;
+                    }
+                }
             }
             return true;
         }

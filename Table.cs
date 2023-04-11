@@ -9,7 +9,6 @@ namespace NEA_PROJECT
         public static Card[] tableCards = new Card[5];
         public Table()
         {
-            Hand.InitialiseHand(tableCards);
         }
         public void FullRound()
         {

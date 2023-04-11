@@ -30,10 +30,10 @@ namespace NEA_PROJECT
         }
         public void AssignHandStrengthVals (Player player)
         {
-            player.myBestHand.SortCardValues(player.myHand.playerHand, player.myHand.playerHand.Length);
-            player.myBestHand.playerBestCardVals[0] = (int)player.myBestHand.GetBestHand(EvaluationHand,7);
+            player.myBestHand.SortCardValues(player.myHand.playerHand, player.myBestHand.GetNumberOfValidCards(player.myHand.playerHand));
+            player.myBestHand.playerBestCardVals[0] = (int)player.myBestHand.GetBestHand(EvaluationHand, player.myBestHand.GetNumberOfValidCards(player.bestHand.EvaluationHand));
             player.myBestHand.playerBestCardVals[1] = player.myBestHand.playersBestHand[0].Value; 
-            player.myBestHand.playerBestCardVals[2] = player.myBestHand.DuplicateValueCheck(EvaluationHand, 7, 2, player.myBestHand.playerBestCardVals[1]);
+            player.myBestHand.playerBestCardVals[2] = player.myBestHand.DuplicateValueCheck(EvaluationHand, player.myBestHand.GetNumberOfValidCards(EvaluationHand), 2, player.myBestHand.playerBestCardVals[1]);
             player.myBestHand.playerBestCardVals[3] = player.myHand.playerHand[0].Value;
             player.myBestHand.playerBestCardVals[4] = player.myHand.playerHand[1].Value;
         }

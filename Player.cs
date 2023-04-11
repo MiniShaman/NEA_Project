@@ -46,6 +46,7 @@ namespace NEA_PROJECT
             }
             if (goodHand)
             {
+
                 return 10;
             }
             return 5;
@@ -54,23 +55,24 @@ namespace NEA_PROJECT
         public HandEvaluation.PokerHand HandEvaluatorSystem() // Combines a players hand with the table cards, sorts the values and then gets the best hand
         {
             CombineHandAndTableCards();
-            myBestHand.SortCardValues(bestHand.EvaluationHand, bestHand.EvaluationHand.Length);
+            myBestHand.SortCardValues(bestHand.EvaluationHand, myBestHand.GetNumberOfValidCards(bestHand.EvaluationHand));
             return myBestHand.GetBestHand(bestHand.EvaluationHand, myBestHand.GetNumberOfValidCards(bestHand.EvaluationHand));
             
         }
         public void CombineHandAndTableCards()
         {
             int handcounter = 0;
-            for (int i = 0; i < Table.tableCards.Length; ++i)
-            {
-                bestHand.EvaluationHand[handcounter] = Table.tableCards[handcounter];
-                ++handcounter;
-            }
             for (int j = 0; j < myHand.playerHand.Length; ++j)
             {
                 bestHand.EvaluationHand[handcounter] = myHand.playerHand[j];
                 ++handcounter;
             }
+            for (int i = 0; i < Table.tableCards.Length; ++i)
+            {
+                bestHand.EvaluationHand[handcounter] = Table.tableCards[i];
+                ++handcounter;
+            }
+            
         }
     }
 }

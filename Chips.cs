@@ -19,12 +19,12 @@ namespace NEA_PROJECT
                 
             if (!isAnAI)
             {
-                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Or_Fold_Text);
+                /*Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Or_Fold_Text);
                 Console.WriteLine("Bet or Fold?");
                 string gameDecision = Program.gameInputs.StringInput();
                 Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Or_Fold_Text);
                 Program.myDisplay.ClearText("Bet or Fold?");
-                if (Program.gameInputs.DoesPlayerBet(player,gameDecision))
+                if (Program.gameInputs.DoesPlayerBet(player,gameDecision))*/
                 {
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Text_Display);
 

@@ -6,15 +6,15 @@ namespace NEA_PROJECT
 {
     public class HandStrength
     {
-        public static int bestHandChoiceLimit = 7;        
-        public Card[] EvaluationHand = new Card[bestHandChoiceLimit];
-        public int bestHandCounter = 0;       
+        public static int combinedHandLimit = 7;        
+        public Card[] combinedHand = new Card[combinedHandLimit];
+        //public int bestHandCounter = 0;
 
-        public void BestHandChoice(Card CurrentCard)
-        {
-            EvaluationHand[bestHandCounter] = CurrentCard;
-            ++bestHandCounter;
-        }
+        //public void besthandchoice(card currentcard)
+        //{
+        //    combinedhand[besthandcounter] = currentcard;
+        //    ++besthandcounter;
+        //}
         public int CompareHands(Player player, Player AI)
         {
             AssignHandStrengthVals(player);
@@ -31,11 +31,47 @@ namespace NEA_PROJECT
         public void AssignHandStrengthVals (Player player)
         {
             player.myBestHand.SortCardValues(player.myHand.playerHand, player.myBestHand.GetNumberOfValidCards(player.myHand.playerHand));
-            player.myBestHand.playerBestCardVals[0] = (int)player.myBestHand.GetBestHand(EvaluationHand, player.myBestHand.GetNumberOfValidCards(player.bestHand.EvaluationHand));
+
+            // Hand Type pair, flush etc
+            player.myBestHand.playerBestCardVals[0] = (int)player.myBestHand.GetBestHand(player, player.handStrength.combinedHand, player.myBestHand.GetNumberOfValidCards(player.handStrength.combinedHand));
+
+            // Strength of the hand type
             player.myBestHand.playerBestCardVals[1] = player.myBestHand.playersBestHand[0].Value; 
-            player.myBestHand.playerBestCardVals[2] = player.myBestHand.DuplicateValueCheck(EvaluationHand, player.myBestHand.GetNumberOfValidCards(EvaluationHand), 2, player.myBestHand.playerBestCardVals[1]);
+
+            // Secondary strength : two pair, full house
+            player.myBestHand.playerBestCardVals[2] = player.myBestHand.DuplicateValueCheck(player.handStrength.combinedHand, player.myBestHand.GetNumberOfValidCards(player.handStrength.combinedHand), 2, player.myBestHand.playerBestCardVals[1]);
+
+            // Players highest card
             player.myBestHand.playerBestCardVals[3] = player.myHand.playerHand[0].Value;
+
+            // Players other card
             player.myBestHand.playerBestCardVals[4] = player.myHand.playerHand[1].Value;
+        }
+
+        public bool CheckCardsExistInCombinedHand(Card [] cards)
+        {
+            for(int i = 0; i < cards.Length; ++i)
+            {
+                Card card = cards[i];
+                bool cardFound = false;
+
+                if (card != null)
+                {
+                    for (int j = 0; j < combinedHand.Length; ++j)
+                    {
+                        if (card == combinedHand[j])
+                        {
+                            cardFound = true;
+                            break;
+                        }
+                    }
+                    if(cardFound == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

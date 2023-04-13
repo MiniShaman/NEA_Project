@@ -3,6 +3,9 @@ using System.Diagnostics;
 
 namespace NEA_PROJECT
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class HandEvaluation
     {
         //public static int handCardCheckpoint = 2;
@@ -51,8 +54,10 @@ namespace NEA_PROJECT
         // rearrange cards to make best hand at start of array
         // return the best enum PokerHand
         //
-        public PokerHand GetBestHand(Card[] cards, int NumOfCards)
+        public PokerHand GetBestHand(Player player,Card[] cards, int NumOfCards)
         {
+            Debug.Assert(player.handStrength.CheckCardsExistInCombinedHand(cards));
+
             Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Player_Best_Hand_Name);
             if (GetNumberOfValidCards(cards) >= minHandSize)
             {
@@ -88,6 +93,7 @@ namespace NEA_PROJECT
 
         public bool IsHandAStraightFlush(Card[] cards, int NumOfCards)
         {
+            
             if (IsHandAFlush(cards, NumOfCards))
             {
                 Card[] BestFlushHand = new Card[GetNumberOfValidCards(playersBestHand)];
@@ -331,6 +337,13 @@ namespace NEA_PROJECT
             }
             return true;
         }
+       
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cardVal1"></param>
+        /// <param name="cardVal2"></param>
+        /// <returns></returns>
         public CardComparison CompareCardValues(Card cardVal1, Card cardVal2)
         {
             int diff = cardVal1.Value - cardVal2.Value;
@@ -432,5 +445,6 @@ namespace NEA_PROJECT
                 }
             }
         }
+        //public bool PotentialStraight()
     }
 }

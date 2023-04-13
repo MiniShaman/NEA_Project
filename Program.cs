@@ -22,6 +22,8 @@ namespace NEA_PROJECT
         public static Table.RoundPhases roundPosition;
         public static bool playGame = true;
         public static bool firstBet = true;
+        public static bool playersTurn;
+
         static void Main(string[] args)
         {
             handTest.DoTests(player);
@@ -72,17 +74,18 @@ namespace NEA_PROJECT
                 communityTable.DealPlayerCards(aiPlayer, DisplayManager.DisplayPosition.AI_Card1, DisplayManager.DisplayPosition.AI_Card2);
 
                 firstBet = true;
-                bool playersTurn = true;
+                playersTurn = true;// communityTable.IsUserFirstPlayer();
 
                 roundPosition = Table.RoundPhases.Pre_Flop;
 
                 while (roundPosition != Table.RoundPhases.Finish_Round)
                 {
                     myDisplay.UpdateDisplay(player, aiPlayer);
+                    int playerbetcount = 0;
                     firstBet = true;
-                    while (!communityTable.TableBetsCheck(player, aiPlayer,player.myChips.roundBetTotal,aiPlayer.myChips.roundBetTotal) || firstBet)
+                    while (!communityTable.AdvanceRound(player,aiPlayer))
                     {
-                        firstBet = false; 
+ 
                         if (playersTurn && !player.playerAllIn)
                         {
                             player.myChips.BetAmount(player,aiPlayer,DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
@@ -93,7 +96,7 @@ namespace NEA_PROJECT
                         }
                         else if (!playersTurn && !aiPlayer.playerAllIn)
                         {
-                            aiPlayer.myChips.BetAmount(player, aiPlayer,DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount(aiPlayer,player));
+                            aiPlayer.myChips.BetAmount(player, aiPlayer,DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount(aiPlayer,player, roundPosition));
                             if (aiPlayer.playerFolded)
                             {
                                 break;
@@ -106,11 +109,13 @@ namespace NEA_PROJECT
                         
 
                         playersTurn = !playersTurn;
+                        firstBet = false;
+                        ++playerbetcount;
                         myDisplay.UpdateDisplay(player, aiPlayer);
                     }
 
-                    player.HandEvaluatorSystem();
-                    aiPlayer.HandEvaluatorSystem();
+                    player.HandEvaluatorSystem(player);
+                    aiPlayer.HandEvaluatorSystem(aiPlayer);
                     
                     if (player.playerFolded || aiPlayer.playerFolded || (player.playerAllIn && aiPlayer.playerAllIn))
                     {
@@ -121,7 +126,7 @@ namespace NEA_PROJECT
                     ++roundPosition;
                     communityTable.DisplayTableCards(roundPosition);
                 }
-                communityTable.CheckForWin(player,aiPlayer, player.bestHand.CompareHands(player, aiPlayer));
+                communityTable.CheckForWin(player,aiPlayer, player.handStrength.CompareHands(player, aiPlayer));
                 Console.ReadLine();
                 communityTable.TableReset(player, aiPlayer);
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Replay_Game_Text);

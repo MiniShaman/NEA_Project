@@ -10,27 +10,80 @@ namespace NEA_PROJECT
         {
 
         }
+        public int GetBetAmountOrFold(out bool hasFolded)
+        {
+            bool inputValid = false;
+            int betAmount = 0;
+            hasFolded = false;
+                while (inputValid == false)
+                {
+                    string gameDecision = StringInput();
+                    gameDecision.ToLower();
+                    if (gameDecision == "fold" || gameDecision == "f")
+                    {
+                        hasFolded = true;
+                        inputValid = true;
+                    }
+                    else if (int.TryParse(gameDecision, out betAmount))
+                    {
+                        inputValid = true;
+                    }
+                }
+            return betAmount;
+        }
         public int BetValueCheck(int PlayerChips, Player player, Player AI, bool isAnAI)
         {
-            int betAmount;
+            int playerBet = player.myChips.roundBetTotal;
+            int betAmount = 0;
+            bool hasFolded;
             do
             {
-                betAmount = Program.gameInputs.IntInput();
-                if(PlayersAllIn(player,betAmount))
+                betAmount = GetBetAmountOrFold(out hasFolded);
+                if (hasFolded)
                 {
-                    return betAmount;
+                    player.playerFolded = true;
+                    break;
                 }
-               else if (betAmount == 0)
+                else
                 {
-                    if(PlayerChecks(player, AI,isAnAI))
+                    //betAmount = Program.gameInputs.IntInput();
+                    if (PlayersAllIn(player, betAmount))
                     {
                         return betAmount;
                     }
+                    else if (betAmount == 0)
+                    {
+                        if (PlayerChecks(player, AI, isAnAI))
+                        {
+                            return betAmount;
+                        }
+                    } 
+
+                    playerBet += betAmount;
                 }
             }
-            while (PlayerChips < betAmount || betAmount < Chips.MinBetAmount || !Program.communityTable.TableBetsCheck(player, AI, player.myChips.PlayerChipCount, AI.myChips.PlayerChipCount));
+            while ( /* keep doing this if the bet is not valid*/
+            IsBetInvalid(player, AI, PlayerChips, betAmount, playerBet));
 
             return betAmount;
+        }
+        public bool IsBetInvalid(Player player, Player AI, int PlayerChips, int betAmount, int totalBetAmount)
+        {
+            return betAmount > PlayerChips ||
+            betAmount < Chips.MinBetAmount ||
+            !Program.communityTable.TableBetsCheck(player, AI, totalBetAmount, AI.myChips.roundBetTotal)
+            || AllInBetMatch(player,AI,betAmount);
+        }
+        public bool AllInBetMatch(Player player, Player AI,int betAmount)
+        {
+            if(AI.playerAllIn)
+            {
+                if(betAmount != AI.myChips.roundBetTotal || player.playerAllIn)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         public bool PlayerChecks(Player player, Player AI, bool isAnAI) // Determines whether a player can check and if they are choosing to do so
         {
@@ -76,19 +129,20 @@ namespace NEA_PROJECT
               int returnChoice = -1;
               do
               {
-                 gameChoice.ToLower();
-                 if (gameChoice == "fold" || gameChoice == "f")
-                 {
+                gameChoice.ToLower();
+                if (gameChoice == "fold" || gameChoice == "f")
+                {
                     player.playerFolded = true;
-                 return false;
-                 }
-                 else if (gameChoice == "bet" || gameChoice == "b")
-                 {
-                     return true;
-                 }
-                 else
-
+                    return false;
+                }
+                else if (gameChoice == "bet" || gameChoice == "b")
+                {
+                    return true;
+                }
+                else
+                {
                     gameChoice = StringInput();
+                }
               }   
               while (returnChoice == -1);
             return true;
@@ -106,9 +160,9 @@ namespace NEA_PROJECT
 
             while (!foundInt)
             {
-                readlineString = Console.ReadLine();
+                readlineString = StringInput();
                 foundInt = int.TryParse(readlineString, out intFound);
-                Program.myDisplay.ClearText(cursorLeft, cursorTop, readlineString);
+                //Program.myDisplay.ClearText(cursorLeft, cursorTop, readlineString);
             }
 
             Program.myDisplay.ClearText(cursorLeft, cursorTop, readlineString);
@@ -120,7 +174,7 @@ namespace NEA_PROJECT
             int left = Console.CursorLeft;
             int top = Console.CursorTop;
             string text = Console.ReadLine();
-            Program.myDisplay.ClearText(top, left, text);
+            Program.myDisplay.ClearText(left, top, text);
             return text;
         }
         public bool CheckConfirmation(string response)

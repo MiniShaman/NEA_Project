@@ -151,18 +151,44 @@ namespace NEA_PROJECT
             EvaluationHand[bestHandCounter] = CurrentCard;
             ++bestHandCounter;
         }*/
-        public bool TableBetsCheck(Player player, Player AI,int playerBet, int aiBet) // Checks all incoming bets to see if they match or a player is all in to allow the game to progress
+        public bool TableBetsCheck(Player player, Player AI, int playerBet, int aiBet) // Checks all incoming bets to see if they match or a player is all in to allow the game to progress
         {
-            bool playerBetLimit = false;
-            bool aiBetLimit = false;
-            if(player.playerAllIn || playerBet == aiBet)
-                playerBetLimit = true;
-            if (AI.playerAllIn || aiBet == playerBet)
-                aiBetLimit = true;
-            if (aiBetLimit && playerBetLimit)
+
+            if (Program.firstBet)
+            {
+                return true;
+            }
+
+            bool playerNeedsToBet = false;
+            bool aiNeedsToBet = false;
+
+            if (player.playerAllIn || playerBet >= aiBet)
+                aiNeedsToBet = true;
+            if (AI.playerAllIn || aiBet >= playerBet)
+                playerNeedsToBet = true;
+
+            if ((aiNeedsToBet && !Program.playersTurn) || (playerNeedsToBet && Program.playersTurn))
                 return true;
             else
                 return false;
+            
+        }
+        public bool AdvanceRound(Player player, Player AI)
+        {
+            if(!Program.firstBet)
+            {
+                bool playerBetLimit = false;
+                bool aiBetLimit = false;
+                if (player.playerAllIn || player.myChips.roundBetTotal == AI.myChips.roundBetTotal)
+                    playerBetLimit = true;
+                if (AI.playerAllIn || AI.myChips.roundBetTotal == player.myChips.roundBetTotal)
+                    aiBetLimit = true;
+                if (aiBetLimit && playerBetLimit)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
         }
         public void TableReset(Player player, Player AI) // Sets up Table so the game can be replayed
         {
@@ -192,13 +218,13 @@ namespace NEA_PROJECT
             {
                 case 1:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.End_Game_Text);
-                    Console.WriteLine("The player wins the round");
+                    Console.WriteLine("The player wins the round." + (AI.playerFolded ? " AI Folded." : ""));
                     player.myChips.PlayerChipCount += Program.TableTotal;
                     Program.myDisplay.UpdateDisplay(player, AI);
                     break;
                 case -1:
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.End_Game_Text);
-                    Console.WriteLine("The AI wins the round");
+                    Console.WriteLine("The AI wins the round." + (player.playerFolded ? " Player Folded." : ""));
                     AI.myChips.PlayerChipCount += Program.TableTotal;
                     Program.myDisplay.UpdateDisplay(player, AI);
                     break;
@@ -214,13 +240,33 @@ namespace NEA_PROJECT
             if(player.myChips.PlayerChipCount == 0)
             {
                 Console.WriteLine("AI wins the game");
+                Console.ReadKey();
                 Environment.Exit(0);
             }
             else if(AI.myChips.PlayerChipCount == 0)
             {
                 Console.WriteLine("Player wins the game");
+                Console.ReadKey();
                 Environment.Exit(0);
             }
         }
+        public bool IsUserFirstPlayer()
+        {
+            Random playerChoice = new Random();
+            int startPlayer =  playerChoice.Next(0, 2);
+            switch(startPlayer)
+            {
+                case 0:
+                    return false;
+                case 1:
+                    return true;
+            }
+            return true;
+        }
+        public void TableCardEvaluation()
+        {
+            
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,26 +16,35 @@ namespace NEA_PROJECT
             bool inputValid = false;
             int betAmount = 0;
             hasFolded = false;
-                while (inputValid == false)
+            while (inputValid == false)
+            {
+                string gameDecision = StringInput();
+                gameDecision.ToLower();
+                if(gameDecision == "show" || gameDecision == "s")
                 {
-                    string gameDecision = StringInput();
-                    gameDecision.ToLower();
-                    if (gameDecision == "fold" || gameDecision == "f")
-                    {
-                        hasFolded = true;
-                        inputValid = true;
-                    }
-                    else if (int.TryParse(gameDecision, out betAmount))
-                    {
-                        inputValid = true;
-                    }
+                    Program.DisplayAllPlayerCards(true);
                 }
+                else if(gameDecision == "hide" || gameDecision =="h")
+                {
+                    Program.DisplayAllPlayerCards(false);
+                }
+                else if (gameDecision == "fold" || gameDecision == "f")
+                {
+                    hasFolded = true;
+                    inputValid = true;
+                }
+                else if (int.TryParse(gameDecision, out betAmount))
+                {
+                    inputValid = true;
+                }
+            }
             return betAmount;
         }
         public int BetValueCheck(int PlayerChips, Player player, Player AI, bool isAnAI)
         {
             int playerBet = player.myChips.roundBetTotal;
             int betAmount = 0;
+            bool betInvalid = false;
             bool hasFolded;
             do
             {
@@ -57,33 +67,44 @@ namespace NEA_PROJECT
                         {
                             return betAmount;
                         }
-                    } 
+                    }
 
                     playerBet += betAmount;
                 }
-            }
-            while ( /* keep doing this if the bet is not valid*/
-            IsBetInvalid(player, AI, PlayerChips, betAmount, playerBet));
 
+                betInvalid = IsBetInvalid(player, AI, PlayerChips, betAmount, playerBet);
+                if (betInvalid)
+                {
+                    Debug.Assert(player.playerFolded == false);
+                    Debug.Assert(AI.playerFolded == false);
+                    playerBet = 0;
+                }
+            }
+            while (betInvalid); // keep doing this if the bet is not valid
+            
             return betAmount;
         }
         public bool IsBetInvalid(Player player, Player AI, int PlayerChips, int betAmount, int totalBetAmount)
         {
-            return betAmount > PlayerChips ||
-            betAmount < Chips.MinBetAmount ||
-            !Program.communityTable.TableBetsCheck(player, AI, totalBetAmount, AI.myChips.roundBetTotal)
-            || AllInBetMatch(player,AI,betAmount);
+            return
+                betAmount > PlayerChips ||          // bet more than you've got
+                betAmount < Chips.MinBetAmount ||   // bet can't be negative
+                !Program.communityTable.CheckTableBetsAreValid(player, AI, totalBetAmount, AI.myChips.roundBetTotal);
+                //|| AllInBetMatch(player,AI,betAmount);
         }
         public bool AllInBetMatch(Player player, Player AI,int betAmount)
         {
-            if(AI.playerAllIn)
+            if(AI.playerAllInState)
             {
-                if(betAmount != AI.myChips.roundBetTotal || player.playerAllIn)
+                // player bet is not equal to the ai's all in bet
+                // OR
+                // player is also all in.
+                if(betAmount != AI.myChips.roundBetTotal || player.playerAllInState)
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
         public bool PlayerChecks(Player player, Player AI, bool isAnAI) // Determines whether a player can check and if they are choosing to do so
         {
@@ -118,7 +139,7 @@ namespace NEA_PROJECT
             {
                 Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Player_Check_Or_All_In_Text);
                 Console.WriteLine("Player is all in");
-                player.playerAllIn = true;
+                player.playerAllInState = true;
                 return true;
             }
             return false;

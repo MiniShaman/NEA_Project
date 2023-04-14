@@ -58,10 +58,10 @@ namespace NEA_PROJECT
                 deck[randomCardPosition] = holdCard;
             }
         }
-        public Card DealAndDisplayCard()
+        public Card DealAndDisplayCard(bool showCard = true)
         {
             Card CurrentCard = deck[deckPlace];
-            CurrentCard.DisplayCard();
+            CurrentCard.DisplayCard(showCard);
             ++deckPlace;
             return CurrentCard;
         }

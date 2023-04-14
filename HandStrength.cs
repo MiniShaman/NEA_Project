@@ -30,22 +30,29 @@ namespace NEA_PROJECT
         }
         public void AssignHandStrengthVals (Player player)
         {
-            player.myBestHand.SortCardValues(player.myHand.playerHand, player.myBestHand.GetNumberOfValidCards(player.myHand.playerHand));
+            try
+            {
+                player.myBestHand.SortCardValues(player.myHand.playerHand, player.myBestHand.GetNumberOfValidCards(player.myHand.playerHand));
 
-            // Hand Type pair, flush etc
-            player.myBestHand.playerBestCardVals[0] = (int)player.myBestHand.GetBestHand(player, player.handStrength.combinedHand, player.myBestHand.GetNumberOfValidCards(player.handStrength.combinedHand));
+                // Hand Type pair, flush etc
+                player.myBestHand.playerBestCardVals[0] = (int)player.myBestHand.GetBestHand(player, player.handStrength.combinedHand, player.myBestHand.GetNumberOfValidCards(player.handStrength.combinedHand));
 
-            // Strength of the hand type
-            player.myBestHand.playerBestCardVals[1] = player.myBestHand.playersBestHand[0].Value; 
+                // Strength of the hand type
+                player.myBestHand.playerBestCardVals[1] = player.myBestHand.playersBestHand[0].Value;
 
-            // Secondary strength : two pair, full house
-            player.myBestHand.playerBestCardVals[2] = player.myBestHand.DuplicateValueCheck(player.handStrength.combinedHand, player.myBestHand.GetNumberOfValidCards(player.handStrength.combinedHand), 2, player.myBestHand.playerBestCardVals[1]);
+                // Secondary strength : two pair, full house
+                player.myBestHand.playerBestCardVals[2] = player.myBestHand.DuplicateValueCheck(player.handStrength.combinedHand, player.myBestHand.GetNumberOfValidCards(player.handStrength.combinedHand), 2, player.myBestHand.playerBestCardVals[1]);
 
-            // Players highest card
-            player.myBestHand.playerBestCardVals[3] = player.myHand.playerHand[0].Value;
+                // Players highest card
+                player.myBestHand.playerBestCardVals[3] = player.myHand.playerHand[0].Value;
 
-            // Players other card
-            player.myBestHand.playerBestCardVals[4] = player.myHand.playerHand[1].Value;
+                // Players other card
+                player.myBestHand.playerBestCardVals[4] = player.myHand.playerHand[1].Value;
+            }
+            catch(ArgumentNullException)
+            {
+                Console.WriteLine("Error - Null value cannot be set to an element of playerBestCardVals");
+            }
         }
 
         public bool CheckCardsExistInCombinedHand(Card [] cards)

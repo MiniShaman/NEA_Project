@@ -43,15 +43,25 @@ namespace NEA_PROJECT
             set { cardvalue = value; }
         }
 
-        public void DisplayCard()
+        public void DisplayCard(bool showCard = true)
         {
-            string cardString = GetDisplayString();
-            switch (Suit)
+            string cardString = "";
+            if (showCard == false)
             {
-                case CardSuit.Hearts:
-                case CardSuit.Diamonds:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                cardString = "XX";
+            }
+            else
+            {
+                cardString = GetDisplayString();
+
+                switch (Suit)
+                {
+                    case CardSuit.Hearts:
+                    case CardSuit.Diamonds:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        break;
+                }
             }
             Console.Write(cardString);
             Console.ForegroundColor = ConsoleColor.Black;

@@ -111,13 +111,13 @@ namespace NEA_PROJECT
             }
         }
          */
-        public void DealPlayerCards(Player player, DisplayManager.DisplayPosition cardPosition1, DisplayManager.DisplayPosition cardPosition2)
+        public void DealPlayerCards(Player player, DisplayManager.DisplayPosition cardPosition1, DisplayManager.DisplayPosition cardPosition2, bool showCards = true)
         {
             //my cards
             Program.myDisplay.SetCursorPosition(cardPosition1);
-            player.myHand.playerHand[0] = Program.myDeck.DealAndDisplayCard();
+            player.myHand.playerHand[0] = Program.myDeck.DealAndDisplayCard(showCards);
             Program.myDisplay.SetCursorPosition(cardPosition2);
-            player.myHand.playerHand[1] = Program.myDeck.DealAndDisplayCard();
+            player.myHand.playerHand[1] = Program.myDeck.DealAndDisplayCard(showCards);
             /*Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.AI_Card1);
             Program.myDeck.DealAndDisplayCard();
             Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.AI_Card2);
@@ -128,6 +128,38 @@ namespace NEA_PROJECT
             //Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
             //Program.myDisplay.DisplayAllCards(player.myBestHand.EvaluationHand, HandEvaluation.handCardCheckpoint);
         }
+
+        public void DisplayPlayerCards(Player player, DisplayManager.DisplayPosition cardPosition1, DisplayManager.DisplayPosition cardPosition2, bool showCards = true)
+        {
+            int left = Console.CursorLeft;
+            int top = Console.CursorTop;
+
+            Program.myDisplay.SetCursorPosition(cardPosition1);
+            Program.myDisplay.ClearText(3);
+            Program.myDisplay.SetCursorPosition(cardPosition2);
+            Program.myDisplay.ClearText(3);
+
+            if (showCards)
+            {
+                Program.myDisplay.SetCursorPosition(cardPosition1);
+                player.myHand.playerHand[0].DisplayCard();
+                Program.myDisplay.SetCursorPosition(cardPosition2);
+                player.myHand.playerHand[1].DisplayCard();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Program.myDisplay.SetCursorPosition(cardPosition1);
+                Console.Write("XX");
+                Program.myDisplay.SetCursorPosition(cardPosition2);
+                Console.Write("XX");
+            }
+
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(left, top);
+        }
+
+
         /*
          public void DisplayHand(Player player)
         {
@@ -151,9 +183,18 @@ namespace NEA_PROJECT
             EvaluationHand[bestHandCounter] = CurrentCard;
             ++bestHandCounter;
         }*/
-        public bool TableBetsCheck(Player player, Player AI, int playerBet, int aiBet) // Checks all incoming bets to see if they match or a player is all in to allow the game to progress
-        {
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="AI"></param>
+        /// <param name="playerBet"></param>
+        /// <param name="aiBet"></param>
+        /// <returns></returns>
+
+        public bool CheckTableBetsAreValid(Player player, Player AI, int playerBet, int aiBet)
+        { 
             if (Program.firstBet)
             {
                 return true;
@@ -162,16 +203,15 @@ namespace NEA_PROJECT
             bool playerNeedsToBet = false;
             bool aiNeedsToBet = false;
 
-            if (player.playerAllIn || playerBet >= aiBet)
+            if (player.playerAllInState || playerBet >= aiBet)
                 aiNeedsToBet = true;
-            if (AI.playerAllIn || aiBet >= playerBet)
+            if (AI.playerAllInState || aiBet >= playerBet)
                 playerNeedsToBet = true;
 
             if ((aiNeedsToBet && !Program.playersTurn) || (playerNeedsToBet && Program.playersTurn))
-                return true;
-            else
                 return false;
-            
+            else
+                return true;
         }
         public bool AdvanceRound(Player player, Player AI)
         {
@@ -179,9 +219,9 @@ namespace NEA_PROJECT
             {
                 bool playerBetLimit = false;
                 bool aiBetLimit = false;
-                if (player.playerAllIn || player.myChips.roundBetTotal == AI.myChips.roundBetTotal)
+                if (player.playerAllInState || player.myChips.roundBetTotal == AI.myChips.roundBetTotal)
                     playerBetLimit = true;
-                if (AI.playerAllIn || AI.myChips.roundBetTotal == player.myChips.roundBetTotal)
+                if (AI.playerAllInState || AI.myChips.roundBetTotal == player.myChips.roundBetTotal)
                     aiBetLimit = true;
                 if (aiBetLimit && playerBetLimit)
                     return true;
@@ -198,8 +238,8 @@ namespace NEA_PROJECT
             Array.Clear(player.myBestHand.playersBestHand, 0, player.myBestHand.playersBestHand.Length);
             player.playerFolded = false;
             AI.playerFolded = false;
-            player.playerAllIn = false;
-            AI.playerAllIn = false;
+            player.playerAllInState = false;
+            AI.playerAllInState = false;
             Program.myDisplay.InitialiseDisplay();
             Program.myDisplay.SetupDisplay(Program.player.myChips.PlayerChipCount, Program.aiPlayer.myChips.PlayerChipCount);
             Program.myDeck.Shuffle();

@@ -304,23 +304,30 @@ namespace NEA_PROJECT
         }
         public Card[] SortCardValues(Card[] cards, int NumOfCards) // Sorts Card values from highest to lowest
         {
-            do
+            try
             {
-                for (int i = 0; i < NumOfCards - 1; ++i)
+                do
                 {
-                    if (cards[i] != null)
+                    for (int i = 0; i < NumOfCards - 1; ++i)
                     {
-                        Card switchCard;
-                        if (cards[i].Value < cards[i + 1].Value)
+                        if (cards[i] != null)
                         {
-                            switchCard = cards[i];
-                            cards[i] = cards[i + 1];
-                            cards[i + 1] = switchCard;
+                            Card switchCard;
+                            if (cards[i].Value < cards[i + 1].Value)
+                            {
+                                switchCard = cards[i];
+                                cards[i] = cards[i + 1];
+                                cards[i + 1] = switchCard;
+                            }
                         }
                     }
                 }
+                while (CheckCardsDescend(cards, NumOfCards) == false);
+            }           
+            catch(ArgumentNullException)
+            {
+                Console.WriteLine("Null value passed in");
             }
-            while(CheckCardsDescend(cards,NumOfCards) == false);
             return cards;
         }
         public bool CheckCardsDescend(Card [] cardList, int NumOfCards)

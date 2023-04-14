@@ -35,7 +35,8 @@ namespace NEA_PROJECT
             Round_Point_Text,
             End_Game_Text,
             Player_Check_Or_All_In_Text,
-            Bet_Or_Fold_Text
+            Bet_Or_Fold_Text,
+            Error_Text
         }
 
         public void InitialiseDisplay()
@@ -171,6 +172,9 @@ namespace NEA_PROJECT
                     break;
                 case DisplayPosition.Bet_Or_Fold_Text:
                     Console.SetCursorPosition(0, 29);
+                    break;
+                case DisplayPosition.Error_Text:
+                    Console.SetCursorPosition(30, 5);
                     break;
                 default: 
 

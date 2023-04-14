@@ -12,7 +12,7 @@ namespace NEA_PROJECT
         public Hand myHand = new Hand();
         public HandStrength handStrength = new HandStrength();
         public bool playerFolded = false;
-        public bool playerAllIn = false;
+        public bool playerAllInState = false;
         public int cardValUpperLimit = 14;
         public int cardValLowerLimit = 10;
         //public HandStrength myBestHand = new HandStrength();
@@ -25,21 +25,45 @@ namespace NEA_PROJECT
             int betAmount = 0;
             HandEvaluatorSystem(AI);
             handStrength.AssignHandStrengthVals(AI);
-            if(player.playerAllIn)
+            if(player.playerAllInState)
             {
                 switch (CheckOpposingBet(player, AI, AI.myBestHand.playerBestCardVals))
                 {
+                    case 0:
+                        if(DoesAIBluff())
+                        {
+                            if (AI.myChips.roundBetTotal + AI.myChips.PlayerChipCount > player.myChips.roundBetTotal)
+                            {
+                                AI.playerAllInState = true;
+                                return player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
+                            }
+                            else
+                            {
+                                AI.playerAllInState = true;
+                                return AI.myChips.PlayerChipCount;
+                            }
+                        }
+                        AI.playerFolded = true;
+                        return 0;
                     case 1:
                     case 2:
-                        AI.playerAllIn = true;
-                        return AI.myChips.PlayerChipCount;
+                        if (AI.myChips.roundBetTotal + AI.myChips.PlayerChipCount > player.myChips.roundBetTotal)
+                        {
+                            AI.playerAllInState = true;
+                            return player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
+                        }
+                        else
+                        {
+                            AI.playerAllInState = true;
+                            return AI.myChips.PlayerChipCount;
+                        }
                     case 3:
                         AI.playerFolded = true;
                         return 0;
                 }
             }
             betAmount = AIPhaseBets(betAmount, AI.myBestHand.playerBestCardVals, currentPhase, player, AI);
-            if (AI.playerAllIn == true)
+            if (AI.playerAllInState == true)
                 return AI.myChips.PlayerChipCount;
             else if(betAmount + AI.myChips.roundBetTotal < player.myChips.roundBetTotal)
             {
@@ -325,7 +349,7 @@ namespace NEA_PROJECT
                     }
                     else
                     {
-                        playerAllIn = true;
+                        playerAllInState = true;
                         return false;
                     }
 
@@ -371,12 +395,12 @@ namespace NEA_PROJECT
          {
             if(handStrengthVals[0] >= (int)HandEvaluation.PokerHand.Straight && roundPhases >= Table.RoundPhases.Flop)
             {
-                playerAllIn = true;
+                playerAllInState = true;
                 return true;
             }
             if(DoesAIBluff())
             {
-                playerAllIn = true;
+                playerAllInState = true;
                 return true;
             }
             return false;
@@ -424,7 +448,7 @@ namespace NEA_PROJECT
                             }
                             else if (AITotalBet < player.myChips.roundBetTotal)
                             {
-                                AI.playerAllIn = true;
+                                AI.playerAllInState = true;
                                 return AI.myChips.PlayerChipCount;
                             }
                         }

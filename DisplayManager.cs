@@ -4,12 +4,18 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
+    /// <summary>
+    /// Holds all info on the display setup for the game
+    /// </summary>
     public class DisplayManager
     {
 
         public DisplayManager()
         {
         }
+        /// <summary>
+        /// Enum of every position in the display
+        /// </summary>
         public enum DisplayPosition
         {
             Player_Card1,
@@ -38,14 +44,21 @@ namespace NEA_PROJECT
             Bet_Or_Fold_Text,
             Error_Text
         }
-
+        /// <summary>
+        /// Sets ups the initial display
+        /// </summary>
         public void InitialiseDisplay()
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Clear();
         }
-
+        /// <summary>
+        /// Set up game and displays both players chips and bets in the round so far
+        /// also displays the table chips
+        /// </summary>
+        /// <param name="playerChips"></param>
+        /// <param name="aiChips"></param>
         public void SetupDisplay(int playerChips, int aiChips)
         {
             Console.WriteLine("*****************************************************************");
@@ -72,7 +85,11 @@ namespace NEA_PROJECT
             SetCursorPosition(DisplayPosition.Round_Point_Text);
             Console.WriteLine("Round Place: " + Program.roundPosition);
         }
-
+        /// <summary>
+        /// Updates the display to match the changing chips and round
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="aiPlayer"></param>
         public void UpdateDisplay(Player player, Player aiPlayer)
         {
             UpdateDisplayLine("Chips: " + player.myChips.PlayerChipCount, DisplayPosition.Chips_Player);
@@ -88,7 +105,12 @@ namespace NEA_PROJECT
             UpdateDisplayLine("Round Place: " + Program.roundPosition, DisplayPosition.Round_Point_Text,5);
 
         }
-
+        /// <summary>
+        /// Rewrites in new text over an existing line of text when wanting to update info
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="displayPosition"></param>
+        /// <param name="errorAmount"></param>
         public void UpdateDisplayLine(string text, DisplayPosition displayPosition, int errorAmount = 2)
         {
             SetCursorPosition(displayPosition);
@@ -96,7 +118,10 @@ namespace NEA_PROJECT
             Console.WriteLine(text);
         }
 
-
+        /// <summary>
+        /// Holds all cursor positions for the enums of display position 
+        /// </summary>
+        /// <param name="Position"></param>
         public void SetCursorPosition(DisplayPosition Position) // Holds all cursor positions for each item/text being displayed
         {
             switch(Position)
@@ -181,32 +206,37 @@ namespace NEA_PROJECT
                     break;
             }
         }
-        /*public void ClearLine(int xCursorPos, int yCursorPos, int lineClearLength) // Clear any Text in a specific position
-        {
-            Console.SetCursorPosition(xCursorPos, yCursorPos);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            string[] clearText = new string[lineClearLength];
-            foreach(string arraySlot in clearText)
-            {
-                Console.Write("i");
-            }
-            Console.ForegroundColor = ConsoleColor.Black;
-        }*/
-
+        /// <summary>
+        /// Clears the text from a specific cursor position and resets the cursor to that position post clearing
+        /// for lengths of text
+        /// </summary>
+        /// <param name="cursorLeft"></param>
+        /// <param name="cursorTop"></param>
+        /// <param name="clearLength"></param>
         public void ClearText(int cursorLeft, int cursorTop, int clearLength)
         {
             Console.SetCursorPosition(cursorLeft, cursorTop);
             ClearText(clearLength);
             Console.SetCursorPosition(cursorLeft, cursorTop);
         }
-
+        /// <summary>
+        /// Clears the text from a specific cursor position and resets the cursor to that position post clearing
+        /// for text
+        /// </summary>
+        /// <param name="cursorLeft"></param>
+        /// <param name="cursorTop"></param>
+        /// <param name="clearLength"></param>
         public void ClearText(int cursorLeft, int cursorTop, string clearText)
         {
             Console.SetCursorPosition(cursorLeft, cursorTop);
             ClearText(clearText);
             Console.SetCursorPosition(cursorLeft, cursorTop);
         }
-
+        /// <summary>
+        /// The clear function which sets the cursor position and writes over any text with grey X's as they are hidden on the display
+        /// for length
+        /// </summary>
+        /// <param name="clearLength"></param>
         public void ClearText(int clearLength) // Clear any Text need to have set cursor pos before
         {
             int left = Console.CursorLeft;
@@ -221,6 +251,11 @@ namespace NEA_PROJECT
 
             Console.SetCursorPosition(left, top);
         }
+        /// <summary>
+        /// The clear function which sets the cursor position and writes over any text with grey X's as they are hidden on the display
+        /// for text
+        /// </summary>
+        /// <param name="clearLength"></param>
         public void ClearText(string clearText) // Clear any Text need to have set cursor pos before
         {
             int left = Console.CursorLeft;
@@ -232,11 +267,11 @@ namespace NEA_PROJECT
 
             Console.SetCursorPosition(left, top);
         }
-
-        public void GetStringLength()
-        {
-            Console.Read();
-        }
+        /// <summary>
+        /// Displays all cards in a cards list from up to a the round position e.g 2,5,6,7
+        /// </summary>
+        /// <param name="cardList"></param>
+        /// <param name="roundPosCounter"></param>
         public void DisplayAllCards( Card [] cardList, int roundPosCounter)
         {
             for(int i =0;i< roundPosCounter;++i )

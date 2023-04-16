@@ -2,14 +2,11 @@
 
 namespace NEA_PROJECT
 {
+    /// <summary>
+    /// Where the main game is played and where most classes are instantiated
+    /// </summary>
     class Program
-    {
-        //public static int bestHandCombo = 7;
-        //public static Card [] handStatus = new Card[bestHandCombo];
-        //public static Card myCard = new Card();
-        //public static int TableCount = 1;
-        //public static HandEvaluation playerHand = new HandEvaluation();
-        //public static Chips myChips = new Chips(); //Chips need to go to each player
+    { 
 
         public static Deck myDeck = new Deck();       
         public static DisplayManager myDisplay = new DisplayManager();
@@ -26,45 +23,14 @@ namespace NEA_PROJECT
 
         static void Main(string[] args)
         {
-            handTest.DoTests(player);
+            handTest.DoHandTests(player);
             myDisplay.InitialiseDisplay();
 
             myDeck.Shuffle();
             myDisplay.SetupDisplay(player.myChips.PlayerChipCount, aiPlayer.myChips.PlayerChipCount);                
 
-            /*communityTable.DealPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);
-            communityTable.DealPlayerCards(aiPlayer, DisplayManager.DisplayPosition.AI_Card1, DisplayManager.DisplayPosition.AI_Card2);
-
-            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
-            myDisplay.UpdateDisplay(player, aiPlayer);
-
-            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
-            myDisplay.UpdateDisplay(player, aiPlayer);
-
-            
-            
-            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
-            myDisplay.UpdateDisplay(player, aiPlayer);
-
-            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
-            myDisplay.UpdateDisplay(player, aiPlayer);
-
-            communityTable.DisplayTableCards(Table.RoundPhases.Turn);
-
-            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
-            myDisplay.UpdateDisplay(player, aiPlayer);
-
-            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
-            myDisplay.UpdateDisplay(player, aiPlayer);
-
-            communityTable.DisplayTableCards(Table.RoundPhases.River);
-
-            player.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_Player, DisplayManager.DisplayPosition.Player_Round_Bet_Total, false);
-            myDisplay.UpdateDisplay(player, aiPlayer);
-
-            aiPlayer.myChips.BetAmount(DisplayManager.DisplayPosition.Chips_AI_Player, DisplayManager.DisplayPosition.AI_Player_Round_Bet_Total, true, aiPlayer.AIBetAmount());
-            myDisplay.UpdateDisplay(player, aiPlayer);*/
             //game loop added in
+            //Plays a full game and gives the option for the player to replay
             while (playGame)
             {
                 player.myChips.roundBetTotal = 0;
@@ -73,7 +39,7 @@ namespace NEA_PROJECT
                 DealAllPlayerCards(false);
 
                 firstBet = true;
-                playersTurn = true;// communityTable.IsUserFirstPlayer();
+                playersTurn = communityTable.IsUserFirstPlayer();
 
                 roundPosition = Table.RoundPhases.Pre_Flop;
 
@@ -140,17 +106,26 @@ namespace NEA_PROJECT
                 communityTable.TableReset(player, aiPlayer);
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Replay_Game_Text);
                 Console.WriteLine("Would you like to play again? (yes/no)");
-                string gameContinue = Console.ReadLine();
+                string gameContinue = gameInputs.StringInput();
                 playGame = gameInputs.CheckConfirmation(gameContinue);
                 
             }
 
         }
+        /// <summary>
+        ///  A parameter - to see if AI shows cards
+        ///  Deals and Displays All cards to players
+        /// </summary>
+
         static public void DealAllPlayerCards(bool showAICards)
         {
             communityTable.DealPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);
             communityTable.DealPlayerCards(aiPlayer, DisplayManager.DisplayPosition.AI_Card1, DisplayManager.DisplayPosition.AI_Card2, showAICards);
         }
+        /// <summary>
+        ///  A parameter - to see if AI shows cards
+        ///  Displays All cards to players
+        /// </summary>
         static public void DisplayAllPlayerCards(bool showAICards)
         {
             communityTable.DisplayPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);

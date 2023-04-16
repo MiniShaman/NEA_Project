@@ -5,13 +5,21 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
+    /// <summary>
+    /// Handles all inputs that occur in the game and mediate them
+    /// </summary>
     public class InputHandling
     {
         public InputHandling()
         {
 
         }
-        public int GetBetAmountOrFold(out bool hasFolded)
+        /// <summary>
+        /// gets the player decision in the game
+        /// </summary>
+        /// <param name="hasFolded"></param>
+        /// <returns></returns>
+        public int GetGameDecision(out bool hasFolded)
         {
             bool inputValid = false;
             int betAmount = 0;
@@ -30,8 +38,11 @@ namespace NEA_PROJECT
                 }
                 else if (gameDecision == "fold" || gameDecision == "f")
                 {
-                    hasFolded = true;
-                    inputValid = true;
+                    if (Program.roundPosition != Table.RoundPhases.Pre_Flop)
+                    {
+                        hasFolded = true;
+                        inputValid = true;
+                    }
                 }
                 else if (int.TryParse(gameDecision, out betAmount))
                 {
@@ -40,15 +51,32 @@ namespace NEA_PROJECT
             }
             return betAmount;
         }
+        /// <summary>
+        /// Checks to see what value has been returned from get game decision and makes sure it is valid
+        /// then returns the bet amount if it is
+        /// </summary>
+        /// <param name="PlayerChips"></param>
+        /// <param name="player"></param>
+        /// <param name="AI"></param>
+        /// <param name="isAnAI"></param>
+        /// <returns></returns>
         public int BetValueCheck(int PlayerChips, Player player, Player AI, bool isAnAI)
         {
-            int playerBet = player.myChips.roundBetTotal;
-            int betAmount = 0;
+            int betAmount;
             bool betInvalid = false;
             bool hasFolded;
             do
             {
-                betAmount = GetBetAmountOrFold(out hasFolded);
+                int playerBet = player.myChips.roundBetTotal;
+                if (AI.playerAllInState && player.myChips.roundBetTotal >= AI.myChips.roundBetTotal)
+                {
+                    betAmount = 0;
+                    break;
+                }
+                else
+                {
+                    betAmount = GetGameDecision(out hasFolded);
+                }
                 if (hasFolded)
                 {
                     player.playerFolded = true;
@@ -56,7 +84,6 @@ namespace NEA_PROJECT
                 }
                 else
                 {
-                    //betAmount = Program.gameInputs.IntInput();
                     if (PlayersAllIn(player, betAmount))
                     {
                         return betAmount;
@@ -84,6 +111,17 @@ namespace NEA_PROJECT
             
             return betAmount;
         }
+        /// <summary>
+        /// Checks if the bet is invalid e.g. too much, a negative number, less than the AI bet(when not folding)
+        ///  and returns true if it is invalid
+        ///  else false
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="AI"></param>
+        /// <param name="PlayerChips"></param>
+        /// <param name="betAmount"></param>
+        /// <param name="totalBetAmount"></param>
+        /// <returns></returns>
         public bool IsBetInvalid(Player player, Player AI, int PlayerChips, int betAmount, int totalBetAmount)
         {
             return
@@ -92,6 +130,16 @@ namespace NEA_PROJECT
                 !Program.communityTable.CheckTableBetsAreValid(player, AI, totalBetAmount, AI.myChips.roundBetTotal);
                 //|| AllInBetMatch(player,AI,betAmount);
         }
+        /// <summary>
+        /// Checks if the AI is all in if true 
+        /// then player has to either match the bet 
+        /// or be all in themselves to return true
+        /// else false
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="AI"></param>
+        /// <param name="betAmount"></param>
+        /// <returns></returns>
         public bool AllInBetMatch(Player player, Player AI,int betAmount)
         {
             if(AI.playerAllInState)
@@ -106,6 +154,15 @@ namespace NEA_PROJECT
             }
             return true;
         }
+        /// <summary>
+        /// Checks if player is trying to check if they are and there bets is equal to the AI's bet  and it's not the first bet
+        /// then they return true 
+        /// else returns false
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="AI"></param>
+        /// <param name="isAnAI"></param>
+        /// <returns></returns>
         public bool PlayerChecks(Player player, Player AI, bool isAnAI) // Determines whether a player can check and if they are choosing to do so
         {
             if (!isAnAI)
@@ -133,6 +190,14 @@ namespace NEA_PROJECT
                 }
             return false;
         }
+        /// <summary>
+        /// Checks if the players all in if true
+        /// sets player all in to true and returns true
+        /// else returns false
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="betAmount"></param>
+        /// <returns></returns>
         public bool PlayersAllIn(Player player,int betAmount)
         {
             if (player.myChips.PlayerChipCount == betAmount)
@@ -145,31 +210,11 @@ namespace NEA_PROJECT
             return false;
             
         }
-          public bool DoesPlayerBet(Player player,string gameChoice)
-          {
-              int returnChoice = -1;
-              do
-              {
-                gameChoice.ToLower();
-                if (gameChoice == "fold" || gameChoice == "f")
-                {
-                    player.playerFolded = true;
-                    return false;
-                }
-                else if (gameChoice == "bet" || gameChoice == "b")
-                {
-                    return true;
-                }
-                else
-                {
-                    gameChoice = StringInput();
-                }
-              }   
-              while (returnChoice == -1);
-            return true;
-
-          }
-
+        /// <summary>
+        /// Checks if the input is an int 
+        /// returns the int value once an int is registered
+        /// </summary>
+        /// <returns></returns>
         public int IntInput()
         {
             bool foundInt = false;
@@ -183,13 +228,16 @@ namespace NEA_PROJECT
             {
                 readlineString = StringInput();
                 foundInt = int.TryParse(readlineString, out intFound);
-                //Program.myDisplay.ClearText(cursorLeft, cursorTop, readlineString);
             }
 
             Program.myDisplay.ClearText(cursorLeft, cursorTop, readlineString);
 
             return intFound;
         }
+        /// <summary>
+        /// Sets cursor position and returns a string which is cleared immediately
+        /// </summary>
+        /// <returns></returns>
         public string StringInput()
         {
             int left = Console.CursorLeft;
@@ -198,6 +246,11 @@ namespace NEA_PROJECT
             Program.myDisplay.ClearText(left, top, text);
             return text;
         }
+        /// <summary>
+        /// Checks to see if a player is confirming or rejecting a decision
+        /// </summary>
+        /// <param name="response"></param>
+        /// <returns></returns>
         public bool CheckConfirmation(string response)
         {
             int validResult = -1;

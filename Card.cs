@@ -4,8 +4,15 @@ using System.Diagnostics;
 
 namespace NEA_PROJECT
 {
+    /// <summary>
+    /// Contains All in info on the Card
+    /// which are the suit and card value
+    /// </summary>
     public class Card
     {
+        /// <summary>
+        /// All 4 card suits 
+        /// </summary>
         public enum CardSuit
         {
             Hearts,
@@ -21,7 +28,11 @@ namespace NEA_PROJECT
 
         CardSuit cardsuit;
 
-
+        /// <summary>
+        /// Takes two parameters the card value and suit 
+        /// A card is then set with a suit and value
+        /// and an assert happens if the value passed in is outside the usual value range
+        /// </summary>
         public void SetCard(CardSuit cardsuit, int cardvalue)
         {
             Debug.Assert(cardvalue >= 2 && cardvalue <= Ace);
@@ -29,6 +40,9 @@ namespace NEA_PROJECT
             Value = cardvalue;
         }
         
+        /// <summary>
+        /// gets and sets the card suit to the Card
+        /// </summary>
         public CardSuit Suit
         {
             get { return cardsuit; }
@@ -37,12 +51,20 @@ namespace NEA_PROJECT
 
         int cardvalue;// 2 = Two, 3 = Three ... 13 = King Ace = 14 (makes sorting higher to lower easier)
 
+        /// <summary>
+        /// gets and sets the card value to the Card
+        /// </summary>
         public int Value
         {
             get { return cardvalue; }
             set { cardvalue = value; }
         }
-
+        /// <summary>
+        /// takes the show card parameter which is preset to true
+        /// if show card is false, the cards are hidden
+        /// else it displays the card val and suit in the appropriate colour of the suit 
+        /// </summary>
+        /// <param name="showCard"></param>
         public void DisplayCard(bool showCard = true)
         {
             string cardString = "";
@@ -67,20 +89,14 @@ namespace NEA_PROJECT
             Console.ForegroundColor = ConsoleColor.Black;
         }
 
+        /// <summary>
+        /// sets a suit symbol with a specific and special character to a string 
+        /// then a value is added to that string  or a character if its ace, king, queen or jack
+        /// then returns that string
+        /// </summary>
+        /// <returns></returns>
         public string GetDisplayString()
         {
-            //"1 of Hearts"
-            //string cardPrint = Value.ToString() + " of " + Suit.ToString();
-            //return cardPrint;
-
-            /*string cardPrint;
-            if (Value == 1)
-                cardPrint = "A";
-            else
-                cardPrint = Value.ToString();
-            cardPrint += Suit.ToString();
-            return cardPrint;*/
-
             string cardPrint;
             string SuitSymbol = "\u2665";
             switch (Suit)

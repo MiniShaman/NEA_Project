@@ -4,6 +4,10 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
+    /// <summary>
+    /// Chips stores the players chip count, the amount they've bet so far in the round and the minimum bet amount
+    /// It is instanciated inside the player class 
+    /// </summary>
     public class Chips
     {
         public int PlayerChipCount = 100;
@@ -13,18 +17,18 @@ namespace NEA_PROJECT
         {
 
         }    
+        /// <summary>
+        /// Takes 6 parameter Two players ( AI and the user), the display positions for their chips and checks whether an AI is betting and how they've bet if they are
+        /// if AI is betting it skips bet value check then *** -> decreases  round bet total and player chip count by the bet placed and the table total increases by it
+        /// if Player bet it checks to see if the bet is valid in the table circumstances and once it returns that value then ***
+        ///
+        /// </summary>
         public void BetAmount(Player player,Player AI,DisplayManager.DisplayPosition playerChips, DisplayManager.DisplayPosition playerTotalBet, bool isAnAI, int betPlaced = 0 )
         {
 
                 
             if (!isAnAI)
             {
-                /*Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Or_Fold_Text);
-                Console.WriteLine("Bet or Fold?");
-                string gameDecision = Program.gameInputs.StringInput();
-                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Or_Fold_Text);
-                Program.myDisplay.ClearText("Bet or Fold?");
-                if (Program.gameInputs.DoesPlayerBet(player,gameDecision))*/
                 {
                     Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Bet_Text_Display);
 
@@ -33,56 +37,9 @@ namespace NEA_PROJECT
                     betPlaced = Program.gameInputs.BetValueCheck(PlayerChipCount, player, AI, isAnAI);
                 }
             }
-
-            //Program.myDisplay.SetCursorPosition(playerChips);
-            //Program.myDisplay.ClearText("Chips: " + PlayerChipCount);
-
             roundBetTotal += betPlaced;
             PlayerChipCount -= betPlaced;
             Program.TableTotal += betPlaced;
-
-            /*Program.myDisplay.SetCursorPosition(playerChips);
-            Console.WriteLine("Chips: " + PlayerChipCount);
-            Program.myDisplay.SetCursorPosition(playerTotalBet);
-            Console.WriteLine("Total Bet in Round: " + roundBetTotal);
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
-            Console.WriteLine("Table Total: " + Program.TableTotal);*/
-
         }
-        /*
-         * public void BetAmount()
-        {
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BetTextDisplay);
-
-            Console.WriteLine("How much would you like to bet?");
-            int betPlaced = Program.gameInputs.IntInput();
-
-            int chipBet = Program.gameInputs.BetValueCheck(betPlaced, PlayerChipCount);
-
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write("Chips: " + PlayerChipCount);
-
-            PlayerChipCount -= chipBet;
-            TableTotal += chipBet;
-
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Player);
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine("Chips: " + PlayerChipCount);
-            Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Chips_Table_Total);
-            Console.WriteLine("Table Total: " + TableTotal);
-
-        }
-         */
-
-        /*public int BetValueCheck(int betAmount, int PlayerChips)
-        {
-            while (PlayerChips < betAmount || betAmount < Chips.MinBetAmount)
-            {
-                Program.myChips.BetAmount();
-            }
-            return betAmount;
-        }*/
-
     }
 }

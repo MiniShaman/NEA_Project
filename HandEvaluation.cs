@@ -4,21 +4,19 @@ using System.Diagnostics;
 namespace NEA_PROJECT
 {
     /// <summary>
-    /// 
+    ///  Determins a players best hand Type
     /// </summary>
     public class HandEvaluation
     {
-        //public static int handCardCheckpoint = 2;
-        //public static int flopCardCheckpoint = 5;
-        //public static int turnCardCheckpoint = 6;
-        //public static int riverCardCheckpoint = 7;
 
         public static int minHandSize = 5;
 
         public  Card[] playersBestHand = new Card[7];
 
         public int[] playerBestCardVals = new int[5];
-
+        /// <summary>
+        /// Each type of poker hand
+        /// </summary>
         public enum PokerHand
         {
             NoHand,
@@ -38,7 +36,12 @@ namespace NEA_PROJECT
             SameVal,
             NonAdjacentVal
         }
-
+        /// <summary>
+        /// takes an array of cards
+        /// returns the number of non null cards
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns></returns>
         public int GetNumberOfValidCards(Card[] cards)
         {
             int count = 0;
@@ -53,7 +56,7 @@ namespace NEA_PROJECT
 
         // rearrange cards to make best hand at start of array
         // return the best enum PokerHand
-        //
+        // takes 3 parameters a player and array of carsds and the number of cards
         public PokerHand GetBestHand(Player player,Card[] cards, int NumOfCards)
         {
             Debug.Assert(player.handStrength.CheckCardsExistInCombinedHand(cards));
@@ -90,7 +93,15 @@ namespace NEA_PROJECT
             }
             
         }
-
+        /// <summary>
+        /// Checks to see if the hand is a straight flush 
+        /// and copies the values of the straight flush over to  players best hand 
+        /// and returns true
+        /// else false
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool IsHandAStraightFlush(Card[] cards, int NumOfCards)
         {
             
@@ -106,6 +117,15 @@ namespace NEA_PROJECT
             return false;
         }
 
+        /// <summary>
+        /// Checks if the hand is a poker(4 of a Kind)
+        /// and it copies the value of to players best hand
+        /// and returns true
+        /// else false
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool IsHandAPoker(Card[] cards, int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
@@ -119,6 +139,15 @@ namespace NEA_PROJECT
             }
             return false;
         }
+        /// <summary>
+        /// Checks to see if a players hand is a full house 
+        /// if it is it returns true 
+        /// else false
+        /// copies cards over to players best hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool IsHandAFullHouse(Card[] cards, int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
@@ -140,6 +169,15 @@ namespace NEA_PROJECT
             }
             return false;
         }
+        /// <summary>
+        /// Checks to see if a players hand is a flush
+        /// if it is it returns true 
+        /// else false
+        /// copies cards over to players best hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool IsHandAFlush(Card[] cards, int NumOfCards) // Checks Cards to see if your hand is a flush
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
@@ -191,6 +229,15 @@ namespace NEA_PROJECT
             return false;           
         }
 
+        /// <summary>
+        /// Checks to see if a players hand is a flush
+        /// if it is it returns true 
+        /// else false
+        /// copies cards over to players best hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool IsHandAStraight(Card[] cards, int NumOfCards)
         {
             Array.Clear(playersBestHand, 0, playersBestHand.Length);
@@ -253,8 +300,16 @@ namespace NEA_PROJECT
                 
             }
             return false;
-        }    
-       
+        }
+        /// <summary>
+        /// Checks to see if a players hand is a straight
+        /// if it is it returns true 
+        /// else false
+        /// copies cards over to players best hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool IsHandAThreeOfAKind(Card []cards, int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
@@ -269,6 +324,15 @@ namespace NEA_PROJECT
             }
             return false; 
         }
+        /// <summary>
+        /// Checks to see if a players hand is a two pair
+        /// if it is it returns true 
+        /// else false
+        /// copies cards over to players best hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool IsHandATwoPair(Card[]cards,int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
@@ -288,6 +352,15 @@ namespace NEA_PROJECT
             }
             return false;
         }
+        /// <summary>
+        /// Checks to see if a players hand is a pair
+        /// if it is it returns true 
+        /// else false
+        /// copies cards over to players best hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool IsHandAPair(Card[]cards,int NumOfCards)
         {
             Debug.Assert(CheckCardsDescend(cards, NumOfCards));
@@ -302,6 +375,13 @@ namespace NEA_PROJECT
             }
             return false;
         }
+        /// <summary>
+        /// sorts card values into descending order
+        /// returning an array of cards
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public Card[] SortCardValues(Card[] cards, int NumOfCards) // Sorts Card values from highest to lowest
         {
             try
@@ -330,6 +410,14 @@ namespace NEA_PROJECT
             }
             return cards;
         }
+        /// <summary>
+        /// Checking that cards in a card array descend
+        /// used mainly when sorting
+        ///                          
+        /// </summary>
+        /// <param name="cardList"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool CheckCardsDescend(Card [] cardList, int NumOfCards)
         {
             for(int i = 0;i<NumOfCards-1;++i)
@@ -346,7 +434,8 @@ namespace NEA_PROJECT
         }
        
         /// <summary>
-        /// 
+        /// Compares card values to see if they match are adjacent or are non sequential
+        /// and returns the an enum value from card comparison
         /// </summary>
         /// <param name="cardVal1"></param>
         /// <param name="cardVal2"></param>
@@ -366,6 +455,14 @@ namespace NEA_PROJECT
 
             return CardComparison.NonAdjacentVal;
         }
+
+        /// <summary>
+        /// Checks to see if an ace and two are both present in an array of cards
+        /// mainly used when testing for a straight and straight flush
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <returns></returns>
         public bool CheckForAceAndTwo(Card[] cards, int NumOfCards)
         {
             bool aceCheck = false;
@@ -421,6 +518,12 @@ namespace NEA_PROJECT
             }
             return 0;
         }
+        /// <summary>
+        /// copies all cards of the correct suit over to player best hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <param name="SuitChoice"></param>
         public void CopySuitToBestHand(Card [] cards, int NumOfCards, Card.CardSuit SuitChoice)
         {
             Array.Clear(playersBestHand, 0, playersBestHand.Length);
@@ -435,6 +538,16 @@ namespace NEA_PROJECT
                 }
             }
         }
+        /// <summary>
+        /// Copies all values that appear more than once over to best hand 
+        /// also checks to see if that value is already in best hand so it can ignore it 
+        /// 
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="NumOfCards"></param>
+        /// <param name="cardMatchVal"></param>
+        /// <param name="valueAddLimit"></param>
+        /// <param name="bestHandIndex"></param>
         public void CopyDuplicatesToBestHand(Card[] cards, int NumOfCards, int cardMatchVal, int valueAddLimit, int bestHandIndex = 0)
         {
             valueAddLimit += bestHandIndex;
@@ -452,6 +565,5 @@ namespace NEA_PROJECT
                 }
             }
         }
-        //public bool PotentialStraight()
     }
 }

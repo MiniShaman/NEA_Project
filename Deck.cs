@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
+    /// <summary>
+    /// Stores a deck of cards that are shuffled and used for the game 
+    /// <
     public class Deck
     {
         int deckPlace = 0;
@@ -14,7 +17,10 @@ namespace NEA_PROJECT
         public static Card[] deck = new Card[DeckSize];
 
         Random RandomGenerator = new Random();
-
+        
+        /// <summary>
+        /// Initialises the deck array and creates a default non-shuffled deck of cards
+        /// </summary>
         public Deck()
         {
             for (int i = 0; i < DeckSize; ++i)
@@ -23,7 +29,10 @@ namespace NEA_PROJECT
             }
             CreateDefault();
         }
-        public void ArrayDisplay() // Displays all elements in the deck array
+        /// <summary>
+        /// Display all cards in the deck array
+        /// 
+        public void DeckDisplay() // Displays all elements in the deck array
         {
             for (int i = 1; i <= DeckSize; ++i)
             {
@@ -31,7 +40,10 @@ namespace NEA_PROJECT
             }
         }
 
-        public void CreateDefault() // Creates a standard, unshuffled deck of cards
+        /// <summary>
+        ///  Creates a standard, unshuffled deck of cards
+        /// 
+        public void CreateDefault() 
         {
             Card.CardSuit suit = Card.CardSuit.Hearts;
             int value = 1; // remember an Ace is 14, so we start at 2
@@ -47,7 +59,10 @@ namespace NEA_PROJECT
                 }
             }
         }
-        public void Shuffle() // Creates a Shuffled deck of Cards
+        /// <summary>
+        /// Creates a Shuffled deck of Cards
+        /// runs through each position in the deck with a counter
+        public void Shuffle()  
         {
             CreateDefault();
             for(int i = 0;i<DeckSize;++i)
@@ -58,6 +73,11 @@ namespace NEA_PROJECT
                 deck[randomCardPosition] = holdCard;
             }
         }
+        /// <summary>
+        /// Takes a bool to see if cards should be displayed or hidden by X's
+        /// Sets Current Card to the place in the deck
+        /// Displays current card and will hide it if showcard is false 
+        /// it then returns the current card
         public Card DealAndDisplayCard(bool showCard = true)
         {
             Card CurrentCard = deck[deckPlace];

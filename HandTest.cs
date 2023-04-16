@@ -4,6 +4,10 @@ using System.Text;
 
 namespace NEA_PROJECT
 {
+    /// <summary>
+    /// Does Testing for Hand Types
+    /// and checks that HandEvaluation works
+    /// </summary>
     class HandTest
     {
         Card[] straight_test_0 = new Card[fullHandSize];
@@ -174,49 +178,10 @@ namespace NEA_PROJECT
             straight_flush_test_1[5].SetCard(Card.CardSuit.Clubs, 8);
             straight_flush_test_1[6].SetCard(Card.CardSuit.Clubs, 7);
         }
-
-        /*void InitialiseHand(Card[] hand)
-        {
-            for (int i = 0; i < hand.Length; ++i)
-            {
-                hand[i] = new Card();
-            }
-        }*/
-        /*public Card[] PrintStraightHand()
-        {
-            bool repeatCase;
-            Card[] handTypeStraight = new Card[fullHandSize];
-            Console.WriteLine("Pick a Straight Hand:" +
-                    "\n1.Ace, King option" +
-                    "\n2. Pair in Straight option" +
-                    "\n3.Default Staight");
-            do
-            {
-                repeatCase = true;                
-                int pickHand = Program.gameInputs.IntInput();
-                Program.myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.BestHandCombo);
-                switch (pickHand)
-                {
-                    case 1:
-                        Card oneCard = new Card();
-                        oneCard.Value = 13;
-                        for(int i = 0; i<fullHandSize;++i)
-                        {
-
-                        }
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    default:
-                        repeatCase = false;
-                        break;
-                }
-            }
-            while (repeatCase == false);
-        }*/
-
+        /// <summary>
+        ///  A parameter of the player 
+        ///  and tests a variety of straight/close to straight hands
+        /// </summary>
         public void DoStraightTests(Player player)
         {
             player.myBestHand.SortCardValues(straight_test_0, fullHandSize);
@@ -237,6 +202,10 @@ namespace NEA_PROJECT
                 Console.WriteLine("ERROR: Straight - Low Ace not found.");
             }
         }
+        /// <summary>
+        ///  A parameter of the player 
+        ///  and tests a variety of flush/close to flush hands
+        /// </summary>
 
         public void DoFlushTests(Player player)
         {
@@ -253,6 +222,10 @@ namespace NEA_PROJECT
                 Console.WriteLine("ERROR: Flush - false positive.");
             }
         }
+        /// <summary>
+        ///  A parameter of the player 
+        ///  and tests a variety of poker/close to poker hands
+        /// </summary>
         public void DoPokerTests(Player player)
         { 
             player.myBestHand.SortCardValues(poker_test_0, fullHandSize);
@@ -261,6 +234,10 @@ namespace NEA_PROJECT
                 Console.WriteLine("ERROR: Poker - basic detection failed");
             }
         }
+        /// <summary>
+        ///  A parameter of the player 
+        ///  and tests a variety of FullHouse/close to FullHouse hands
+        /// </summary>
         public void DoFullHouseTests(Player player)
         {
             player.myBestHand.SortCardValues(full_house_test_0, fullHandSize);
@@ -275,6 +252,10 @@ namespace NEA_PROJECT
                 Console.WriteLine("ERROR: Full House - false positive");
             }
         }
+        /// <summary>
+        ///  A parameter of the player 
+        ///  and tests a variety of Pair/close to Pair hands
+        /// </summary>
         public void DoPairTests(Player player)
         {
             player.myBestHand.SortCardValues(pair_test_0, fullHandSize);
@@ -288,6 +269,10 @@ namespace NEA_PROJECT
                 Console.WriteLine("ERROR: Pair - false positive");
             }
         }
+        /// <summary>
+        ///  A parameter of the player 
+        ///  and tests a variety of Two Pair/close to Two Pair hands
+        /// </summary>
         public void DoTwoPairTests(Player player)
         {
             player.myBestHand.SortCardValues(two_pair_test_0, fullHandSize);
@@ -301,6 +286,10 @@ namespace NEA_PROJECT
                 Console.WriteLine("ERROR: Two Pair - false positive");
             }
         }
+        /// <summary>
+        ///  A parameter of the player 
+        ///  and tests a variety of Straight Flush/close to Straight Flush hands
+        /// </summary>
         public void DoStraightFlushTests(Player player)
         {
             player.myBestHand.SortCardValues(straight_flush_test_0,fullHandSize);
@@ -316,7 +305,11 @@ namespace NEA_PROJECT
                 Console.WriteLine("ERROR: Straight Flush - false positive");
             }
         }
-        public void DoTests(Player player)
+        /// <summary>
+        /// A parameter of the player 
+        /// Runs through all hand tests
+        /// </summary>
+        public void DoHandTests(Player player)
         {
             DoStraightTests(player);
             DoFlushTests(player);

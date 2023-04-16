@@ -39,4 +39,3 @@ C:\NEA_Project\SCHOOL_PROJECT\NEA_PROJECT\NEA_PROJECT\obj\Debug\netcoreapp3.1\NE
 C:\NEA_Project\SCHOOL_PROJECT\NEA_PROJECT\NEA_PROJECT\obj\Debug\netcoreapp3.1\NEA_PROJECT.dll
 C:\NEA_Project\SCHOOL_PROJECT\NEA_PROJECT\NEA_PROJECT\obj\Debug\netcoreapp3.1\NEA_PROJECT.pdb
 C:\NEA_Project\SCHOOL_PROJECT\NEA_PROJECT\NEA_PROJECT\obj\Debug\netcoreapp3.1\NEA_PROJECT.genruntimeconfig.cache
-C:\NEA_Project\NEA_PROJECT\obj\Debug\netcoreapp3.1\NEA_PROJECT.csproj.AssemblyReference.cache

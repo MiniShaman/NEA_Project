@@ -16,6 +16,9 @@ namespace NEA_PROJECT
         }
         /// <summary>
         /// gets the player decision in the game
+        /// if they choose to show or hide the AI's cards
+        /// they will still have to make a bet following this 
+        /// else they woill have entered in a value or chosen to fold
         /// </summary>
         /// <param name="hasFolded"></param>
         /// <returns></returns>
@@ -264,7 +267,7 @@ namespace NEA_PROJECT
                     validResult = 0;
                 else
                 {
-                    response = Console.ReadLine();
+                    response = StringInput();
                 }
             }
 

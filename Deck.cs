@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 
@@ -37,6 +38,44 @@ namespace NEA_PROJECT
             for (int i = 1; i <= DeckSize; ++i)
             {
                 Console.WriteLine(deck[i]);
+            }
+        }
+        /// <summary>
+        /// Tests The Shuffle Function to make sure that all 52 cards are printed out 
+        /// and that non repeat
+        /// </summary>
+        public void TestShuffledDeck()
+        {           
+            int deckposition = 0;
+            Shuffle();
+            try
+            {
+                Card currentCard = new Card();
+                Card previousCard = new Card();
+                for (int i = 0; i < 4; ++i)
+                {
+                    for (int j = 0; j < 13; ++j)
+                    {
+                        currentCard = deck[deckposition];
+                        if (currentCard == previousCard)
+                        {
+                            Console.WriteLine("Error - Repeat Card Detected");
+                            Debug.Assert(currentCard != previousCard);
+                        }
+                        Console.Write(currentCard.GetDisplayString());
+                        Console.Write("  ");
+                        previousCard = currentCard;
+                        ++deckposition;
+                    }
+                    Console.WriteLine("");
+                }
+            }
+            catch(IndexOutOfRangeException)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("Error - This is outside of the array range!");
             }
         }
 

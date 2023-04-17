@@ -9,7 +9,8 @@ namespace NEA_PROJECT
     /// Also contains to functions and a constructor
     public class Hand
     {
-        public Card[] playerHand = new Card[2];
+        public static int playerHandSize = 2;
+        public Card[] playerHand = new Card[playerHandSize];
 
         /// Hands constructor, just initialises a players hand when an object is instanciated
 

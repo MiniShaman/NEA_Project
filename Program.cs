@@ -12,7 +12,7 @@ namespace NEA_PROJECT
         public static DisplayManager myDisplay = new DisplayManager();
         public static Table communityTable = new Table();      
         public static InputHandling gameInputs = new InputHandling();
-        public static HandTest handTest = new HandTest();
+        
         public static Player player = new Player();
         public static Player aiPlayer = new Player();
         public static int TableTotal = 0;
@@ -21,9 +21,15 @@ namespace NEA_PROJECT
         public static bool firstBet = true;
         public static bool playersTurn;
 
+        public static HandTest handTest = new HandTest();
+        public static HandComparisonTest handComparisonTest = new HandComparisonTest();
+
         static void Main(string[] args)
         {
             handTest.DoHandTests(player);
+            
+            handComparisonTest.DoTests();
+            Console.Read();
             myDisplay.InitialiseDisplay();
 
             myDeck.Shuffle();
@@ -37,14 +43,14 @@ namespace NEA_PROJECT
                 aiPlayer.myChips.roundBetTotal = 0;
 
                 DealAllPlayerCards(false);
-
+                //DisplayAllPlayerCards(true);
                 firstBet = true;
-                playersTurn = communityTable.IsUserFirstPlayer();
+                playersTurn = false; //communityTable.IsUserFirstPlayer();
 
                 roundPosition = Table.RoundPhases.Pre_Flop;
 
                 while (roundPosition != Table.RoundPhases.Finish_Round)
-                {
+                { 
                     myDisplay.UpdateDisplay(player, aiPlayer);
                     firstBet = true;
                     try
@@ -82,8 +88,8 @@ namespace NEA_PROJECT
                     {
                         Console.WriteLine("Error - Insufficient Memory, Game looped for to long");
                     }
-                    player.HandEvaluatorSystem(player);
-                    aiPlayer.HandEvaluatorSystem(aiPlayer);
+                    Player.HandEvaluatorSystem(player, Table.tableCards);
+                    Player.HandEvaluatorSystem(aiPlayer, Table.tableCards);
                     if (player.playerAllInState && aiPlayer.playerAllInState && roundPosition == Table.RoundPhases.River)
                     {
                         break;
@@ -101,14 +107,15 @@ namespace NEA_PROJECT
                 // Game has ended here
                 DisplayAllPlayerCards(true);
 
-                communityTable.CheckForWin(player,aiPlayer, player.handStrength.CompareHands(player, aiPlayer));
+                communityTable.CheckForWin(player,aiPlayer, HandStrength.CompareHands(player, aiPlayer));
                 Console.ReadLine();
                 communityTable.TableReset(player, aiPlayer);
                 myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Replay_Game_Text);
                 Console.WriteLine("Would you like to play again? (yes/no)");
                 string gameContinue = gameInputs.StringInput();
                 playGame = gameInputs.CheckConfirmation(gameContinue);
-                
+                myDisplay.SetCursorPosition(DisplayManager.DisplayPosition.Replay_Game_Text);
+                myDisplay.ClearText("Would you like to play again? (yes/no)");                
             }
 
         }
@@ -128,6 +135,11 @@ namespace NEA_PROJECT
         /// </summary>
         static public void DisplayAllPlayerCards(bool showAICards)
         {
+            //player.myHand.playerHand[0].SetCard(Card.CardSuit.Hearts, 3);
+            //player.myHand.playerHand[1].SetCard(Card.CardSuit.Hearts, 8);
+            //aiPlayer.myHand.playerHand[0].SetCard(Card.CardSuit.Hearts, 10);
+            //aiPlayer.myHand.playerHand[1].SetCard(Card.CardSuit.Diamonds, 10);
+
             communityTable.DisplayPlayerCards(player, DisplayManager.DisplayPosition.Player_Card1, DisplayManager.DisplayPosition.Player_Card2);
             communityTable.DisplayPlayerCards(aiPlayer, DisplayManager.DisplayPosition.AI_Card1, DisplayManager.DisplayPosition.AI_Card2, showAICards);
         }

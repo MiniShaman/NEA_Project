@@ -21,13 +21,15 @@ namespace NEA_PROJECT
         //}
 
         /// <summary>
-        /// Compares both players hand and returns a int if either player won 
-        /// or if they were drawn
+        /// Compares both players hand and returns 
+        /// '1' if player wins 
+        /// '-1' if ai wins
+        /// or '0' if drawn (very rare)
         /// </summary>
         /// <param name="player"></param>
         /// <param name="AI"></param>
         /// <returns></returns>
-        public int CompareHands(Player player, Player AI)
+        static public int CompareHands(Player player, Player AI)
         {
             AssignHandStrengthVals(player);
             AssignHandStrengthVals(AI);
@@ -46,7 +48,7 @@ namespace NEA_PROJECT
         /// if that occurs an error message pops up
         /// </summary>
         /// <param name="player"></param>
-        public void AssignHandStrengthVals (Player player)
+        static public void AssignHandStrengthVals (Player player)
         {
             try
             {

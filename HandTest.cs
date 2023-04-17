@@ -18,6 +18,7 @@ namespace NEA_PROJECT
         Card[] flush_test_1 = new Card[fullHandSize];
 
         Card[] poker_test_0 = new Card[fullHandSize];
+        Card[] poker_test_1 = new Card[fullHandSize];
 
         Card[] full_house_test_0 = new Card[fullHandSize];
         Card[] full_house_test_1 = new Card[fullHandSize];
@@ -33,6 +34,10 @@ namespace NEA_PROJECT
         Card[] two_pair_test_0 = new Card[fullHandSize];
         Card[] two_pair_test_1 = new Card[fullHandSize];
 
+        Card[] three_of_a_kind_test_0 = new Card[fullHandSize];
+        Card[] three_of_a_kind_test_1 = new Card[fullHandSize];
+
+
         public static int fullHandSize = 7;
         public HandTest()
         {
@@ -44,6 +49,7 @@ namespace NEA_PROJECT
             Hand.InitialiseHand(flush_test_1);
 
             Hand.InitialiseHand(poker_test_0);
+            Hand.InitialiseHand(poker_test_1);
 
             Hand.InitialiseHand(full_house_test_0);
             Hand.InitialiseHand(full_house_test_1);
@@ -58,20 +64,23 @@ namespace NEA_PROJECT
             Hand.InitialiseHand(straight_flush_test_0);
             Hand.InitialiseHand(straight_flush_test_1);
 
+            Hand.InitialiseHand(three_of_a_kind_test_0);
+            Hand.InitialiseHand(three_of_a_kind_test_1);
+
             straight_test_0[0].SetCard(Card.CardSuit.Hearts, 7);
             straight_test_0[1].SetCard(Card.CardSuit.Hearts, 6);
             straight_test_0[2].SetCard(Card.CardSuit.Hearts, 6);
             straight_test_0[3].SetCard(Card.CardSuit.Hearts, 5);
             straight_test_0[4].SetCard(Card.CardSuit.Hearts, 4);
             straight_test_0[5].SetCard(Card.CardSuit.Hearts, 3);
-            straight_test_0[6].SetCard(Card.CardSuit.Hearts, 2);
+            straight_test_0[6].SetCard(Card.CardSuit.Diamonds, 2);
 
             straight_test_1[0].SetCard(Card.CardSuit.Hearts, 7);
             straight_test_1[1].SetCard(Card.CardSuit.Hearts, 6);
             straight_test_1[2].SetCard(Card.CardSuit.Hearts, 6);
             straight_test_1[3].SetCard(Card.CardSuit.Hearts, 5);
             straight_test_1[4].SetCard(Card.CardSuit.Hearts, 5);
-            straight_test_1[5].SetCard(Card.CardSuit.Hearts, 4);
+            straight_test_1[5].SetCard(Card.CardSuit.Clubs, 4);
             straight_test_1[6].SetCard(Card.CardSuit.Hearts, 4);
 
             straight_test_2[0].SetCard(Card.CardSuit.Hearts, Card.Ace);
@@ -105,6 +114,14 @@ namespace NEA_PROJECT
             poker_test_0[4].SetCard(Card.CardSuit.Diamonds, Card.Jack);
             poker_test_0[5].SetCard(Card.CardSuit.Spades, Card.Jack);
             poker_test_0[6].SetCard(Card.CardSuit.Hearts, Card.Ace);
+
+            poker_test_1[0].SetCard(Card.CardSuit.Clubs, 2);
+            poker_test_1[1].SetCard(Card.CardSuit.Clubs, Card.Queen);
+            poker_test_1[2].SetCard(Card.CardSuit.Hearts,10);
+            poker_test_1[3].SetCard(Card.CardSuit.Clubs, 10);
+            poker_test_1[4].SetCard(Card.CardSuit.Diamonds,10);
+            poker_test_1[5].SetCard(Card.CardSuit.Spades, Card.Jack);
+            poker_test_1[6].SetCard(Card.CardSuit.Hearts, Card.Ace);
 
             full_house_test_0[0].SetCard(Card.CardSuit.Clubs, Card.King);
             full_house_test_0[1].SetCard(Card.CardSuit.Clubs, Card.Queen);
@@ -181,6 +198,7 @@ namespace NEA_PROJECT
         /// <summary>
         ///  A parameter of the player 
         ///  and tests a variety of straight/close to straight hands
+        ///  printing a message specific to the error type if the desired result is not returned
         /// </summary>
         public void DoStraightTests(Player player)
         {
@@ -191,20 +209,46 @@ namespace NEA_PROJECT
             {
                 Console.WriteLine("ERROR: Straight - basic detection failed.");
             }
-
+            else
+            {
+                //Console.WriteLine("Success - basic straight found, functions works correctly");
+                //for (int i = 0; i < fullHandSize; ++i)
+                //{
+                //    Console.Write(straight_test_0[i].GetDisplayString());
+                //    Console.Write("  ");
+                //}
+            }
             if (player.myBestHand.IsHandAStraight(straight_test_1, fullHandSize))
             {
                 Console.WriteLine("ERROR: Straight - false positive (duplication).");
             }
-
+            else
+            {
+                //Console.WriteLine("Success - false positive wasn't detected (duplication)");
+                //for (int i = 0; i < fullHandSize; ++i)
+                //{
+                //    Console.Write(straight_test_1[i].GetDisplayString());
+                //    Console.Write("  ");
+                //}
+            }
             if(player.myBestHand.IsHandAStraight(straight_test_2, fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Straight - Low Ace not found.");
+            }
+            else
+            {
+                //Console.WriteLine("Success : straight - Low Ace found");
+                //for (int i = 0; i < fullHandSize; ++i)
+                //{
+                //    Console.Write(straight_test_2[i].GetDisplayString());
+                //    Console.Write("  ");
+                //}
             }
         }
         /// <summary>
         ///  A parameter of the player 
         ///  and tests a variety of flush/close to flush hands
+        ///   printing a message specific to the error type if the desired result is not returned
         /// </summary>
 
         public void DoFlushTests(Player player)
@@ -216,27 +260,64 @@ namespace NEA_PROJECT
             {
                 Console.WriteLine("ERROR: Flush - basic detection failed.");
             }
-
+            else
+            {
+                //Console.WriteLine("Success: Flush - basic detection passed");
+                //for (int i = 0; i < fullHandSize; ++i)
+                //{
+                //    Console.Write(flush_test_0[i].GetDisplayString());
+                //    Console.Write("  ");
+                //}
+            }
             if (player.myBestHand.IsHandAFlush(flush_test_1, fullHandSize))
             {
                 Console.WriteLine("ERROR: Flush - false positive.");
+            }
+            else
+            {
+                //Console.WriteLine("Success: Flush  - false positive wasn't detected");
+                //for (int i = 0; i < fullHandSize; ++i)
+                //{
+                //    Console.Write(flush_test_1[i].GetDisplayString());
+                //    Console.Write("  ");
+                //}
             }
         }
         /// <summary>
         ///  A parameter of the player 
         ///  and tests a variety of poker/close to poker hands
+        ///   printing a message specific to the error type if the desired result is not returned
         /// </summary>
         public void DoPokerTests(Player player)
         { 
             player.myBestHand.SortCardValues(poker_test_0, fullHandSize);
+            player.myBestHand.SortCardValues(poker_test_1, fullHandSize);
             if (player.myBestHand.IsHandAPoker(poker_test_0,fullHandSize) == false)
             {
                 Console.WriteLine("ERROR: Poker - basic detection failed");
+            }
+            else
+            {
+                //Console.WriteLine("Success: Poker - basic detection passed");
+                //for (int i = 0; i < fullHandSize; ++i)
+                //{
+                //    Console.Write(poker_test_0[i].GetDisplayString());
+                //    Console.Write("  ");
+                //}
+            }
+            if(player.myBestHand.IsHandAPoker(poker_test_1, fullHandSize))
+            {
+                Console.WriteLine("ERROR: Poker - false positive.");
+            }
+            else
+            {
+                //Console.WriteLine("Success: Poker - false postive not detected");
             }
         }
         /// <summary>
         ///  A parameter of the player 
         ///  and tests a variety of FullHouse/close to FullHouse hands
+        ///   printing a message specific to the error type if the desired result is not returned
         /// </summary>
         public void DoFullHouseTests(Player player)
         {
@@ -255,6 +336,7 @@ namespace NEA_PROJECT
         /// <summary>
         ///  A parameter of the player 
         ///  and tests a variety of Pair/close to Pair hands
+        ///   printing a message specific to the error type if the desired result is not returned
         /// </summary>
         public void DoPairTests(Player player)
         {
@@ -272,6 +354,7 @@ namespace NEA_PROJECT
         /// <summary>
         ///  A parameter of the player 
         ///  and tests a variety of Two Pair/close to Two Pair hands
+        ///   printing a message specific to the error type if the desired result is not returned
         /// </summary>
         public void DoTwoPairTests(Player player)
         {
@@ -289,6 +372,7 @@ namespace NEA_PROJECT
         /// <summary>
         ///  A parameter of the player 
         ///  and tests a variety of Straight Flush/close to Straight Flush hands
+        ///   printing a message specific to the error type if the desired result is not returned
         /// </summary>
         public void DoStraightFlushTests(Player player)
         {
@@ -308,6 +392,7 @@ namespace NEA_PROJECT
         /// <summary>
         /// A parameter of the player 
         /// Runs through all hand tests
+        ///  printing a message specific to the error type if the desired result is not returned
         /// </summary>
         public void DoHandTests(Player player)
         {

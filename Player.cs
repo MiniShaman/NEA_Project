@@ -18,7 +18,7 @@ namespace NEA_PROJECT
         public bool playerFolded = false;
         
         private bool playerAllIn = false;
-        public bool playerAllInState
+        public bool playerAllInState // add this getter and setter to break it easier to set a break point when searcing for bugs.
         {
             get
             {
@@ -61,8 +61,8 @@ namespace NEA_PROJECT
         public int AIBetAmount(Player AI, Player player, Table.RoundPhases currentPhase)
         {
             int betAmount = 0;
-            HandEvaluatorSystem(AI);
-            handStrength.AssignHandStrengthVals(AI);
+            HandEvaluatorSystem(AI, Table.tableCards);
+            HandStrength.AssignHandStrengthVals(AI);
             AIBetDecision aiBetDecision = MakeAIBetDecision(player, AI, AI.myBestHand.playerBestCardVals, currentPhase);
             switch (aiBetDecision)
             {
@@ -109,95 +109,6 @@ namespace NEA_PROJECT
                 return betAmount;
             }
         }
-
-        //public int AIBetAmount(Player AI, Player player, Table.RoundPhases currentPhase)
-        //{
-        //    int betAmount = 0;
-        //    HandEvaluatorSystem(AI);
-        //    handStrength.AssignHandStrengthVals(AI);
-        //    if (player.playerAllInState)
-        //    {
-        //        switch (MakeAIBetDecision(player, AI, AI.myBestHand.playerBestCardVals))
-        //        {
-        //            case AIBetDecision.Fold:
-        //                if (DoesAIBluff())
-        //                {
-        //                    if (AI.myChips.roundBetTotal + AI.myChips.PlayerChipCount > player.myChips.roundBetTotal)
-        //                    {
-        //                        AI.playerAllInState = true;
-        //                        return player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
-        //                    }
-        //                    else
-        //                    {
-        //                        AI.playerAllInState = true;
-        //                        return AI.myChips.PlayerChipCount;
-        //                    }
-        //                }
-        //                AI.playerFolded = true;
-        //                return 0;
-        //            case AIBetDecision.BetLow: break;
-        //            case AIBetDecision.BetHigh: break;
-        //            case AIBetDecision.AllIn:
-        //                if (AI.myChips.roundBetTotal + AI.myChips.PlayerChipCount > player.myChips.roundBetTotal)
-        //                {
-        //                    AI.playerAllInState = true;
-        //                    return player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
-        //                }
-        //                else
-        //                {
-        //                    AI.playerAllInState = true;
-        //                    return AI.myChips.PlayerChipCount;
-        //                }
-
-        //                //case 0: // FOLD
-        //                //    if (DoesAIBluff())
-        //                //    {
-        //                //        if (AI.myChips.roundBetTotal + AI.myChips.PlayerChipCount > player.myChips.roundBetTotal)
-        //                //        {
-        //                //            AI.playerAllInState = true;
-        //                //            return player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
-        //                //        }
-        //                //        else
-        //                //        {
-        //                //            AI.playerAllInState = true;
-        //                //            return AI.myChips.PlayerChipCount;
-        //                //        }
-        //                //    }
-        //                //    AI.playerFolded = true;
-        //                //    return 0;
-        //                //case 1:
-        //                //case 2:
-        //                //    if (AI.myChips.roundBetTotal + AI.myChips.PlayerChipCount > player.myChips.roundBetTotal)
-        //                //    {
-        //                //        AI.playerAllInState = true;
-        //                //        return player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
-        //                //    }
-        //                //    else
-        //                //    {
-        //                //        AI.playerAllInState = true;
-        //                //        return AI.myChips.PlayerChipCount;
-        //                //    }
-        //                //case 3:
-        //                //    AI.playerFolded = true;
-        //                //    return 0;
-        //        }
-        //    }
-
-        //    betAmount = AIPhaseBets(betAmount, AI.myBestHand.playerBestCardVals, currentPhase, player, AI);
-        //    if (AI.playerAllInState == true)
-        //        return AI.myChips.PlayerChipCount;
-        //    else if (AI.playerFolded == false && betAmount + AI.myChips.roundBetTotal < player.myChips.roundBetTotal)
-        //    {
-        //        return player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
-        //    }
-        //    else
-        //    {
-        //        return betAmount;
-        //    }
-        //}
-
-
-
         /// <summary>
         /// Takes 6 Parameters - bet amount, bet decision, hand strength vals, RoundPhases and both players
         /// takes the current game phase then enters the functions
@@ -712,14 +623,14 @@ namespace NEA_PROJECT
             if (handStrengthVals[0] >= betHighHand) // if the hand is good bet high, random to not be predictable.
                 return AIBetDecision.BetHigh;
 
-            int maybeFoldBet = (handStrengthVals[0] <= (int)HandEvaluation.PokerHand.HighCard 
-                ? randomGenerator.Next(0, 31) 
+            int maybeFoldBet = (handStrengthVals[0] <= (int)HandEvaluation.PokerHand.HighCard
+                ? randomGenerator.Next(0, 31)
                 : randomGenerator.Next(10, 41));
 
             int betDifference = player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
             Debug.Assert(betDifference >= 0);
 
-            if(currentPhase != Table.RoundPhases.Pre_Flop && betDifference >= maybeFoldBet) // if the bet was big then we have a chance of folding
+            if (currentPhase != Table.RoundPhases.Pre_Flop && betDifference >= maybeFoldBet) // if the bet was big then we have a chance of folding
             {
                 int foldCheck = randomGenerator.Next(0, betDifference);
                 if (foldCheck == 0) // always fold on a zero
@@ -737,48 +648,6 @@ namespace NEA_PROJECT
 
             return AIBetDecision.BetLow;
         }
-
-        /// <summary>
-        ///  Takes 3 parameters  - boths players and the hand strength values 
-        ///  checks the opposing players bet so that the AI can have an appropriate response to the player
-        ///  and bet an ideal amount will return a number from 0 - 3
-        /// </summary>
-
-        //public int CheckOpposingBet(Player player, Player AI, int[] handStrengthVals)
-        //{
-        //    int minBetDifBoundary = 15;
-        //    int MaxBetDifBoundary = 30;
-
-        //    int betDifference = player.myChips.roundBetTotal - AI.myChips.roundBetTotal;
-
-        //    if (betDifference > MaxBetDifBoundary)
-        //    {
-        //        if (handStrengthVals[0] >= (int)HandEvaluation.PokerHand.Flush)
-        //        {
-        //            return 1;
-        //        }
-        //    }
-        //    else if (betDifference <= MaxBetDifBoundary && betDifference >= minBetDifBoundary)
-        //    {
-        //        if (handStrengthVals[0] >= (int)HandEvaluation.PokerHand.ThreeOfAKind)
-        //        {
-        //            return 2;
-        //        }
-        //    }
-        //    else if (betDifference <= MaxBetDifBoundary - 15 && betDifference >= minBetDifBoundary - 7)
-        //    {
-        //        if (handStrengthVals[0] >= (int)HandEvaluation.PokerHand.Pair)
-        //        {
-        //            return 3;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return 0;
-        //    }
-
-        //    return 0;
-        //}
 
         /// <summary>
         ///  takes  3 parameters - both players and the bet amount
@@ -805,32 +674,44 @@ namespace NEA_PROJECT
         ///  and asserts if the cards passed in to players bets hand aren't in the combined hand
         ///  then returns pokerHand
         /// </summary>
-        public HandEvaluation.PokerHand HandEvaluatorSystem(Player player) // Combines a players hand with the table cards, sorts the values and then gets the best hand
+        static public HandEvaluation.PokerHand HandEvaluatorSystem(Player player, Card[] tableCards) // Combines a players hand with the table cards, sorts the values and then gets the best hand
         {
-            CombineHandAndTableCards();
-            myBestHand.SortCardValues(handStrength.combinedHand, myBestHand.GetNumberOfValidCards(handStrength.combinedHand));
-            HandEvaluation.PokerHand pokerHand = myBestHand.GetBestHand(player, handStrength.combinedHand, myBestHand.GetNumberOfValidCards(handStrength.combinedHand));
+            CombineHandAndTableCards(player.myHand.playerHand, tableCards, ref player.handStrength.combinedHand);
+
+            player.myBestHand.SortCardValues(player.handStrength.combinedHand, player.myBestHand.GetNumberOfValidCards(player.handStrength.combinedHand));
+
+            HandEvaluation.PokerHand pokerHand = player.myBestHand.GetBestHand(
+                player, 
+                player.handStrength.combinedHand, 
+                player.myBestHand.GetNumberOfValidCards(player.handStrength.combinedHand));
+            
             Debug.Assert(player.handStrength.CheckCardsExistInCombinedHand(player.myBestHand.playersBestHand));
+            
             return pokerHand;
 
         }
         /// <summary>
         /// Combines Table and player cards
         /// </summary>
-        public void CombineHandAndTableCards()
+        //static public void CombineHandAndTableCards()
+        //{
+        //    CombineHandAndTableCards(myHand.playerHand, Table.tableCards);
+        //}
+
+        static public void CombineHandAndTableCards(Card[] playerHand, Card[] tableCards, ref Card[] combinedCards)
         {
             int handcounter = 0;
-            for (int j = 0; j < myHand.playerHand.Length; ++j)
+            for (int j = 0; j < playerHand.Length; ++j)
             {
-                handStrength.combinedHand[handcounter] = myHand.playerHand[j];
+                combinedCards[handcounter] = playerHand[j];
                 ++handcounter;
             }
             for (int i = 0; i < Table.tableCards.Length; ++i)
             {
-                handStrength.combinedHand[handcounter] = Table.tableCards[i];
+                combinedCards[handcounter] = tableCards[i];
                 ++handcounter;
             }
-            
+
         }
     }
 }

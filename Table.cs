@@ -11,6 +11,9 @@ namespace NEA_PROJECT
     /// </summary>
     public class Table
     {
+        /// <summary>
+        /// Store all community(non player) cards displayed on the table
+        /// which is then used later when evaluating player hands 
         public static Card[] tableCards = new Card[5];
         public Table()
         {
@@ -150,11 +153,11 @@ namespace NEA_PROJECT
                 bool aiBetLimit = false;
 
                 // if the player is all in and they've at least bet as much as the AI they are at their limit
-                if (player.playerAllInState || player.myChips.roundBetTotal <= AI.myChips.roundBetTotal)
+                if (player.playerAllInState || player.myChips.roundBetTotal == AI.myChips.roundBetTotal)
                     playerBetLimit = true;
 
                 // if the AI is all in and they've at least bet as much as the player they are at their limit                
-                if (AI.playerAllInState || AI.myChips.roundBetTotal <= player.myChips.roundBetTotal)
+                if (AI.playerAllInState || AI.myChips.roundBetTotal == player.myChips.roundBetTotal)
                     aiBetLimit = true;
                 
                 if (aiBetLimit && playerBetLimit)
